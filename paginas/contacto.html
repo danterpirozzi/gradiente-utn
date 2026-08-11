@@ -26,10 +26,9 @@
 
   <main>
     <h1>Sumate a Gradiente</h1>
-    <p>Dejanos tus datos y nos ponemos en contacto. (Este formulario todavía no envía datos
-       de verdad — eso lo conectamos cuando sumemos la base de datos.)</p>
+    <p>Dejanos tus datos y nos ponemos en contacto.</p>
 
-    <form style="max-width: 500px; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+    <form id="form-contacto" style="max-width: 500px; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
       <label>
         Nombre completo
         <input type="text" name="nombre" required
@@ -58,6 +57,8 @@
               style="padding: 0.8rem; border: none; border-radius: 8px; background: var(--gradiente-fondo); color: white; font-weight: 600; cursor: pointer;">
         Enviar
       </button>
+
+      <p id="mensaje-estado" style="font-weight: 600;"></p>
     </form>
   </main>
 
@@ -66,5 +67,8 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/contacto.js"></script>
 </body>
 </html>
