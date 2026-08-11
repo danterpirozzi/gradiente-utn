@@ -30,22 +30,15 @@
        Por ahora esto es contenido de prueba (estático) — más adelante se va a poder buscar
        por carrera y materia, y subir/descargar material real.</p>
 
-    <section class="grid-cards">
-      <a href="#" class="card">
-        <h3>Parciales y finales</h3>
-        <p>Exámenes resueltos de años anteriores.</p>
-      </a>
+    <input
+      type="text"
+      id="buscador-apuntec"
+      placeholder="Buscar por materia..."
+      style="width: 100%; max-width: 400px; padding: 0.7rem; border-radius: 8px; border: 1px solid var(--borde); margin-top: 1rem;">
 
-      <a href="#" class="card">
-        <h3>Resúmenes</h3>
-        <p>Resúmenes de teoría hechos por estudiantes.</p>
-      </a>
-
-      <a href="#" class="card">
-        <h3>Libros y apuntes</h3>
-        <p>Bibliografía y apuntes de cátedra.</p>
-      </a>
-    </section>
+    <div id="lista-apuntec">
+      <p>Cargando...</p>
+    </div>
 
     <p style="margin-top: 2rem;">
       ¿Tenés material para compartir? <a href="contacto.html">Proponelo acá</a>.
@@ -57,5 +50,8 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/apuntec.js"></script>
 </body>
 </html>
