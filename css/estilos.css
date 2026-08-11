@@ -1,0 +1,165 @@
+/* ===========================================
+   GRADIENTE UTN — Estilos base
+   Identidad: degradados + triángulo ▽
+   =========================================== */
+
+:root {
+  --gradiente-1: #6a11cb;
+  --gradiente-2: #2575fc;
+  --gradiente-fondo: linear-gradient(135deg, var(--gradiente-1), var(--gradiente-2));
+  --texto-oscuro: #1a1a2e;
+  --texto-claro: #f5f5f7;
+  --fondo-claro: #f7f8fc;
+  --borde: #e2e2ea;
+  --radio: 12px;
+  --sombra: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--fondo-claro);
+  color: var(--texto-oscuro);
+  line-height: 1.6;
+}
+
+/* ---------- HEADER / NAV ---------- */
+header {
+  background: var(--gradiente-fondo);
+  color: var(--texto-claro);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--texto-claro);
+}
+
+.logo .triangulo {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+nav {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: var(--texto-claro);
+  text-decoration: none;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+nav a:hover,
+nav a.activo {
+  opacity: 1;
+  border-bottom: 2px solid var(--texto-claro);
+}
+
+/* menú hamburguesa (mobile) */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--texto-claro);
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+/* ---------- CONTENIDO ---------- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  border-radius: var(--radio);
+  background: var(--gradiente-fondo);
+  color: var(--texto-claro);
+  margin-bottom: 2.5rem;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+/* ---------- TARJETAS (cards) ---------- */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.5rem;
+  box-shadow: var(--sombra);
+  text-decoration: none;
+  color: var(--texto-oscuro);
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--gradiente-1);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  nav.abierto {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
