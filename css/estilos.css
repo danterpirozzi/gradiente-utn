@@ -1,18 +1,25 @@
 /* ===========================================
-   GRADIENTE UTN — Estilos base
-   Identidad: degradados + triángulo ▽
+   GRADIENTE UTN — Estilos base v2
+   Identidad real: fondo oscuro + celeste/rosa
    =========================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+
 :root {
-  --gradiente-1: #6a11cb;
-  --gradiente-2: #2575fc;
-  --gradiente-fondo: linear-gradient(135deg, var(--gradiente-1), var(--gradiente-2));
-  --texto-oscuro: #1a1a2e;
-  --texto-claro: #f5f5f7;
-  --fondo-claro: #f7f8fc;
-  --borde: #e2e2ea;
-  --radio: 12px;
-  --sombra: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --celeste: #18BFE3;
+  --rosa: #FF009E;
+  --azul-oscuro: #071a2c;
+  --azul-medio: #0d2b45;
+  --fondo: #050e18;
+  --fondo-card: #0e1f33;
+  --texto-claro: #f5f7fa;
+  --texto-mutado: #9fb3c8;
+  --borde: #1c3652;
+  --radio: 14px;
+  --sombra: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  --gradiente-fondo: linear-gradient(135deg, var(--azul-oscuro), var(--celeste) 140%);
+  --gradiente-texto: linear-gradient(90deg, var(--celeste), #6be8ff);
 }
 
 * {
@@ -22,60 +29,95 @@
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: var(--fondo-claro);
-  color: var(--texto-oscuro);
+  font-family: 'Poppins', system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(24, 191, 227, 0.08), transparent 35%),
+    radial-gradient(circle at 85% 75%, rgba(255, 0, 158, 0.07), transparent 40%),
+    var(--fondo);
+  background-attachment: fixed;
+  color: var(--texto-claro);
   line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 /* ---------- HEADER / NAV ---------- */
 header {
-  background: var(--gradiente-fondo);
-  color: var(--texto-claro);
+  background: linear-gradient(180deg, var(--azul-oscuro), var(--fondo));
+  border-bottom: 1px solid var(--borde);
+  position: relative;
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Línea de acento en degradado celeste -> rosa, marca registrada del sitio */
+header::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--celeste), var(--rosa));
+  opacity: 0.7;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.4rem;
-  font-weight: 700;
+  gap: 0.6rem;
+  font-size: 1.5rem;
+  font-weight: 900;
   text-decoration: none;
   color: var(--texto-claro);
+  text-transform: lowercase;
+}
+
+.logo img {
+  height: 38px;
+  width: auto;
+  border-radius: 8px;
 }
 
 .logo .triangulo {
-  font-size: 1.6rem;
+  color: var(--celeste);
+  font-size: 1.5rem;
   line-height: 1;
+  transform: scaleX(1.1);
 }
 
 nav {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.4rem;
   flex-wrap: wrap;
 }
 
 nav a {
-  color: var(--texto-claro);
+  color: var(--texto-mutado);
   text-decoration: none;
   font-size: 0.95rem;
-  opacity: 0.9;
-  transition: opacity 0.2s;
+  font-weight: 600;
+  transition: color 0.2s;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid transparent;
 }
 
 nav a:hover,
 nav a.activo {
-  opacity: 1;
-  border-bottom: 2px solid var(--texto-claro);
+  color: var(--celeste);
+  border-bottom: 2px solid var(--celeste);
 }
 
-/* menú hamburguesa (mobile) */
 .menu-toggle {
   display: none;
   background: none;
@@ -92,23 +134,51 @@ main {
   padding: 2.5rem 1.5rem;
 }
 
+main > h1 {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+main > p {
+  color: var(--texto-mutado);
+  max-width: 640px;
+}
+
 .hero {
   text-align: center;
-  padding: 3rem 1rem;
-  border-radius: var(--radio);
+  padding: 4.5rem 1.5rem;
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
   background: var(--gradiente-fondo);
   color: var(--texto-claro);
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Patrón de triángulos sutil de fondo, referenciando el isotipo ▽ */
+.hero::before {
+  content: "▽ ▽ ▽ ▽ ▽ ▽";
+  position: absolute;
+  top: -1rem;
+  left: -1rem;
+  font-size: 3rem;
+  letter-spacing: 2rem;
+  opacity: 0.06;
+  white-space: nowrap;
+  transform: rotate(-4deg);
 }
 
 .hero h1 {
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   margin-bottom: 0.5rem;
+  text-transform: lowercase;
+  position: relative;
 }
 
 .hero p {
   font-size: 1.05rem;
-  opacity: 0.95;
+  opacity: 0.9;
+  position: relative;
 }
 
 /* ---------- TARJETAS (cards) ---------- */
@@ -120,31 +190,109 @@ main {
 }
 
 .card {
-  background: white;
+  background: var(--fondo-card);
   border: 1px solid var(--borde);
-  border-radius: var(--radio);
+  border-radius: var(--radio) var(--radio) var(--radio) 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 22px 100%, 0 calc(100% - 22px));
   padding: 1.5rem;
   box-shadow: var(--sombra);
   text-decoration: none;
-  color: var(--texto-oscuro);
-  transition: transform 0.15s ease;
+  color: var(--texto-claro);
+  position: relative;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.2s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--celeste), var(--rosa));
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
+  border-color: var(--celeste);
+  background: var(--azul-medio);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card h3 {
   margin-bottom: 0.5rem;
-  color: var(--gradiente-1);
+  color: var(--celeste);
+  font-size: 1.1rem;
+}
+
+.card p {
+  color: var(--texto-mutado);
+  font-size: 0.92rem;
+}
+
+/* Acento rosa para destacar elementos puntuales (ej: título de sección) */
+.destacado {
+  color: var(--rosa);
+}
+
+/* Etiqueta tipo "pill" en rosa, para categorías (APUNTEC, Info importante) */
+.tag {
+  display: inline-block;
+  background: rgba(255, 0, 158, 0.15);
+  color: var(--rosa);
+  border: 1px solid rgba(255, 0, 158, 0.4);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- FORMULARIOS ---------- */
+label {
+  color: var(--texto-mutado);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+input, textarea {
+  background: var(--fondo-card) !important;
+  border: 1px solid var(--borde) !important;
+  color: var(--texto-claro) !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--celeste) !important;
+}
+
+button[type="submit"] {
+  background: linear-gradient(90deg, var(--celeste), #0d8fb0) !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+button[type="submit"]:hover {
+  filter: brightness(1.1);
 }
 
 /* ---------- FOOTER ---------- */
 footer {
   text-align: center;
   padding: 1.5rem;
-  color: #888;
+  color: var(--texto-mutado);
   font-size: 0.85rem;
+  border-top: 1px solid var(--borde);
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -161,5 +309,9 @@ footer {
 
   .menu-toggle {
     display: block;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
   }
 }

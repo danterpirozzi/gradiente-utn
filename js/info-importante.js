@@ -33,8 +33,8 @@ async function cargarInfoImportante() {
     }
 
     tarjeta.innerHTML = `
+      <span class="tag">${item.categoria}</span>
       <h3>${item.titulo}</h3>
-      <p style="font-size: 0.8rem; color: var(--gradiente-1); text-transform: uppercase; margin-bottom: 0.3rem;">${item.categoria}</p>
       <p>${item.descripcion ?? ''}</p>
     `;
 
