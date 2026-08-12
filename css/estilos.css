@@ -287,13 +287,13 @@ button[type="submit"]:hover {
 }
 
 /* ---------- BREADCRUMB (navegación de carpetas) ---------- */
-#breadcrumb a {
+#breadcrumb a, #breadcrumb-apuntec a {
   color: var(--celeste);
   text-decoration: none;
   font-weight: 600;
 }
 
-#breadcrumb a:hover {
+#breadcrumb a:hover, #breadcrumb-apuntec a:hover {
   text-decoration: underline;
 }
 
