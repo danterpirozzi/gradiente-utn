@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Espacios CEUTN — Gradiente UTN</title>
+  <meta name="description" content="Conocé los espacios del Centro de Estudiantes de la UTN Facultad Regional Rosario.">
+  <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
   <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
@@ -29,20 +31,16 @@
     <p>Conocé los espacios del Centro de Estudiantes UTN Facultad Regional Rosario.
        (Contenido de prueba — acá va la descripción real de cada espacio.)</p>
 
-    <section class="hero" style="margin-top: 2rem;">
-      <h1 style="font-size: 1.5rem;">⭐ Recomendaciones</h1>
-      <p>Bloque destacado con recomendaciones importantes para estudiantes.</p>
-    </section>
+    <div style="margin-top: 2rem;">
+      <h2 class="destacado" style="margin-bottom: 1rem;">⭐ Recomendaciones</h2>
+      <section class="grid-cards" id="lista-recomendaciones">
+        <p>Cargando...</p>
+      </section>
+    </div>
 
-    <section class="grid-cards">
-      <div class="card">
-        <h3>Espacio 1</h3>
-        <p>Descripción del espacio (a completar).</p>
-      </div>
-      <div class="card">
-        <h3>Espacio 2</h3>
-        <p>Descripción del espacio (a completar).</p>
-      </div>
+    <h2 style="margin-top: 3rem; margin-bottom: 1rem;">Todos los espacios</h2>
+    <section class="grid-cards" id="lista-espacios">
+      <p>Cargando...</p>
     </section>
   </main>
 
@@ -51,5 +49,8 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/espacios-ceutn.js"></script>
 </body>
 </html>
