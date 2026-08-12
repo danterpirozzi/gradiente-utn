@@ -16,8 +16,8 @@ async function cargarInfoImportante() {
   // Pedimos, en paralelo, las subcarpetas Y los ítems de la carpeta actual.
   // "is('carpeta_padre_id', null)" cuando estamos en la raíz, o "eq(...)" si estamos adentro de una carpeta
   const filtroCarpetas = carpetaActualId === null
-    ? supabaseClient.from('carpetas').select('*').is('carpeta_padre_id', null).order('orden')
-    : supabaseClient.from('carpetas').select('*').eq('carpeta_padre_id', carpetaActualId).order('orden');
+    ? supabaseClient.from('carpetas').select('*').eq('seccion', 'info_importante').is('carpeta_padre_id', null).order('orden')
+    : supabaseClient.from('carpetas').select('*').eq('seccion', 'info_importante').eq('carpeta_padre_id', carpetaActualId).order('orden');
 
   const filtroItems = carpetaActualId === null
     ? supabaseClient.from('info_importante').select('*').is('carpeta_id', null).order('orden')
