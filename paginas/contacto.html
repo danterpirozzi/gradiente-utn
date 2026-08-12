@@ -30,38 +30,44 @@
     <h1>Sumate a Gradiente</h1>
     <p>Dejanos tus datos y nos ponemos en contacto.</p>
 
-    <form id="form-contacto" style="max-width: 500px; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-      <label>
-        Nombre completo
-        <input type="text" name="nombre" required
-               style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
-      </label>
+    <div style="display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 1.5rem; align-items: flex-start;">
 
-      <label>
-        Email
-        <input type="email" name="email" required
-               style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
-      </label>
+      <img src="../img/equipo.jpg" alt="Equipo de Gradiente"
+           style="width: 100%; max-width: 340px; border-radius: var(--radio); border: 1px solid var(--borde); object-fit: cover;">
 
-      <label>
-        Carrera
-        <input type="text" name="carrera"
-               style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
-      </label>
+      <form id="form-contacto" style="flex: 1; min-width: 280px; max-width: 500px; display: flex; flex-direction: column; gap: 1rem;">
+        <label>
+          Nombre completo
+          <input type="text" name="nombre" required
+                 style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
+        </label>
 
-      <label>
-        Mensaje (opcional)
-        <textarea name="mensaje" rows="4"
-                  style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);"></textarea>
-      </label>
+        <label>
+          Email
+          <input type="email" name="email" required
+                 style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
+        </label>
 
-      <button type="submit"
-              style="padding: 0.8rem; border: none; border-radius: 8px; background: var(--gradiente-fondo); color: white; font-weight: 600; cursor: pointer;">
-        Enviar
-      </button>
+        <label>
+          Carrera
+          <input type="text" name="carrera"
+                 style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
+        </label>
 
-      <p id="mensaje-estado" style="font-weight: 600;"></p>
-    </form>
+        <label>
+          Mensaje (opcional)
+          <textarea name="mensaje" rows="4"
+                    style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);"></textarea>
+        </label>
+
+        <button type="submit"
+                style="padding: 0.8rem; border: none; border-radius: 8px; background: var(--celeste); color: var(--azul-oscuro); font-weight: 700; cursor: pointer;">
+          Enviar
+        </button>
+
+        <p id="mensaje-estado" style="font-weight: 600;"></p>
+      </form>
+    </div>
   </main>
 
   <footer>
