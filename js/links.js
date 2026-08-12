@@ -4,6 +4,7 @@
 
 async function cargarLinks() {
   const contenedor = document.getElementById('lista-links');
+  mostrarSkeleton(contenedor, 4);
 
   const { data, error } = await supabaseClient
     .from('links')

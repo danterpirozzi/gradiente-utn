@@ -4,6 +4,7 @@
 
 async function cargarNovedades() {
   const contenedor = document.getElementById('lista-novedades');
+  mostrarSkeleton(contenedor, 3);
 
   // Pedimos todas las filas de la tabla "novedades",
   // ordenadas por fecha (la más nueva primero)

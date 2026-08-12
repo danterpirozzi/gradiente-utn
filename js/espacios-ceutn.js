@@ -5,6 +5,8 @@
 async function cargarEspacios() {
   const contenedorRecomendaciones = document.getElementById('lista-recomendaciones');
   const contenedorEspacios = document.getElementById('lista-espacios');
+  mostrarSkeleton(contenedorRecomendaciones, 2);
+  mostrarSkeleton(contenedorEspacios, 3);
 
   const { data, error } = await supabaseClient
     .from('espacios_ceutn')

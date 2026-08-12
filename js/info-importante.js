@@ -4,6 +4,7 @@
 
 async function cargarInfoImportante() {
   const contenedor = document.getElementById('lista-info');
+  mostrarSkeleton(contenedor, 6);
 
   const { data, error } = await supabaseClient
     .from('info_importante')

@@ -286,6 +286,32 @@ button[type="submit"]:hover {
   filter: brightness(1.1);
 }
 
+/* ---------- SKELETON LOADING ---------- */
+.skeleton-card {
+  background: var(--fondo-card);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio) var(--radio) var(--radio) 0;
+  padding: 1.5rem;
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(24, 191, 227, 0.08), transparent);
+  animation: skeleton-brillo 1.4s infinite;
+}
+
+@keyframes skeleton-brillo {
+  to { left: 150%; }
+}
+
 /* ---------- FOOTER ---------- */
 footer {
   text-align: center;

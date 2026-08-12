@@ -5,6 +5,8 @@
 let materialApuntec = []; // guardamos todo acá para poder filtrar sin volver a pedir a Supabase
 
 async function cargarApuntec() {
+  mostrarSkeleton(document.getElementById('lista-apuntec'), 4);
+
   const { data, error } = await supabaseClient
     .from('apuntec')
     .select('*')
