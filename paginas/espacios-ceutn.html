@@ -22,35 +22,46 @@
       <a href="info-importante.html">Info importante</a>
       <a href="espacios-ceutn.html" class="activo">Espacios CEUTN</a>
       <a href="links.html">Links</a>
+      <a href="faq.html">FAQ</a>
       <a href="contacto.html">Sumate</a>
     </nav>
   </header>
 
   <main>
     <h1>Espacios CEUTN</h1>
-    <p>Conocé los espacios del Centro de Estudiantes UTN Facultad Regional Rosario.
-       (Contenido de prueba — acá va la descripción real de cada espacio.)</p>
+    <p>Los rincones del Centro de Estudiantes: dónde quedan, cuándo abren y qué vas a encontrar en cada uno.</p>
 
-    <div style="margin-top: 2rem;">
-      <h2 class="destacado" style="margin-bottom: 1rem;">⭐ Recomendaciones</h2>
-      <section class="grid-cards" id="lista-recomendaciones">
-        <p>Cargando...</p>
-      </section>
-    </div>
-
-    <h2 style="margin-top: 3rem; margin-bottom: 1rem;">Todos los espacios</h2>
-    <section class="grid-cards" id="lista-espacios">
+    <section class="grid-cards" id="lista-espacios" style="margin-top: 1.5rem;">
       <p>Cargando...</p>
     </section>
+
+    <div style="margin-top: 3rem;">
+      <h2 class="destacado" style="margin-bottom: 0.5rem;">⭐ Recomendaciones</h2>
+      <p style="color: var(--texto-mutado); margin-bottom: 1rem;">
+        ¿Tenés una sugerencia sobre estos espacios? Contanos.
+      </p>
+
+      <form id="form-recomendacion" style="max-width: 500px; display: flex; flex-direction: column; gap: 0.8rem;">
+        <textarea name="mensaje" required rows="3" placeholder="Escribí tu recomendación acá..."
+                  style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);"></textarea>
+        <button type="submit"
+                style="align-self: flex-start; padding: 0.7rem 1.4rem; border: none; border-radius: 8px; background: var(--celeste); border-bottom: 3px solid var(--rosa); color: var(--azul-oscuro); font-weight: 700; cursor: pointer;">
+          Enviar
+        </button>
+        <p id="mensaje-estado-recomendacion" style="font-weight: 600;"></p>
+      </form>
+    </div>
   </main>
 
   <footer>
     &copy; 2026 Gradiente — Centro de Estudiantes UTN FRRo
+  <p id="footer-redes" style="margin-top: 0.5rem; font-size: 0.8rem;"></p>
   </footer>
 
   <script src="../js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/footer-redes.js"></script>
   <script src="../js/espacios-ceutn.js"></script>
 </body>
 </html>

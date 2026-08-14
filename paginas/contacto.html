@@ -22,6 +22,7 @@
       <a href="info-importante.html">Info importante</a>
       <a href="espacios-ceutn.html">Espacios CEUTN</a>
       <a href="links.html">Links</a>
+      <a href="faq.html">FAQ</a>
       <a href="contacto.html" class="activo">Sumate</a>
     </nav>
   </header>
@@ -49,6 +50,12 @@
         </label>
 
         <label>
+          Número de celular
+          <input type="tel" name="telefono" placeholder="Ej: 341 1234567"
+                 style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
+        </label>
+
+        <label>
           Carrera
           <input type="text" name="carrera"
                  style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);">
@@ -72,11 +79,13 @@
 
   <footer>
     &copy; 2026 Gradiente — Centro de Estudiantes UTN FRRo
+  <p id="footer-redes" style="margin-top: 0.5rem; font-size: 0.8rem;"></p>
   </footer>
 
   <script src="../js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/footer-redes.js"></script>
   <script src="../js/contacto.js"></script>
 </body>
 </html>

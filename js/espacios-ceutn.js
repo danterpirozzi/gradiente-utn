@@ -1,12 +1,10 @@
 // ===========================================
-// GRADIENTE UTN — Espacios CEUTN (conectado a Supabase)
+// GRADIENTE UTN — Espacios CEUTN
 // ===========================================
 
 async function cargarEspacios() {
-  const contenedorRecomendaciones = document.getElementById('lista-recomendaciones');
-  const contenedorEspacios = document.getElementById('lista-espacios');
-  mostrarSkeleton(contenedorRecomendaciones, 2);
-  mostrarSkeleton(contenedorEspacios, 3);
+  const contenedor = document.getElementById('lista-espacios');
+  mostrarSkeleton(contenedor, 3);
 
   const { data, error } = await supabaseClient
     .from('espacios_ceutn')
@@ -15,43 +13,59 @@ async function cargarEspacios() {
 
   if (error) {
     console.error('Error al cargar espacios:', error);
-    contenedorEspacios.innerHTML = '<p>No se pudieron cargar los espacios.</p>';
+    contenedor.innerHTML = '<p>No se pudieron cargar los espacios.</p>';
     return;
   }
 
   if (!data || data.length === 0) {
-    contenedorEspacios.innerHTML = '<p>Todavía no hay espacios cargados.</p>';
-    contenedorRecomendaciones.parentElement.style.display = 'none';
+    contenedor.innerHTML = '<p>Todavía no hay espacios cargados.</p>';
     return;
   }
 
-  const recomendaciones = data.filter((e) => e.es_recomendacion);
-  const resto = data.filter((e) => !e.es_recomendacion);
-
-  // Si no hay ninguna recomendación cargada, ocultamos ese bloque entero
-  if (recomendaciones.length === 0) {
-    contenedorRecomendaciones.parentElement.style.display = 'none';
-  } else {
-    contenedorRecomendaciones.innerHTML = '';
-    recomendaciones.forEach((e) => contenedorRecomendaciones.appendChild(crearTarjeta(e)));
-  }
-
-  contenedorEspacios.innerHTML = '';
-  if (resto.length === 0) {
-    contenedorEspacios.innerHTML = '<p>No hay más espacios para mostrar.</p>';
-  } else {
-    resto.forEach((e) => contenedorEspacios.appendChild(crearTarjeta(e)));
-  }
+  contenedor.innerHTML = '';
+  data.forEach((espacio) => {
+    const tarjeta = document.createElement('div');
+    tarjeta.className = 'card';
+    tarjeta.innerHTML = `
+      <h3>${espacio.nombre}</h3>
+      <p>${espacio.descripcion ?? ''}</p>
+      ${espacio.horario ? `<p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--celeste-claro);">🕒 ${espacio.horario}</p>` : ''}
+      ${espacio.ubicacion ? `<p style="font-size: 0.85rem; color: var(--celeste-claro);">📍 ${espacio.ubicacion}</p>` : ''}
+    `;
+    contenedor.appendChild(tarjeta);
+  });
 }
 
-function crearTarjeta(espacio) {
-  const tarjeta = document.createElement('div');
-  tarjeta.className = 'card';
-  tarjeta.innerHTML = `
-    <h3>${espacio.nombre}</h3>
-    <p>${espacio.descripcion ?? ''}</p>
-  `;
-  return tarjeta;
-}
+// Formulario de recomendaciones: guarda el mensaje en Supabase (nadie más lo lee desde el navegador)
+document.addEventListener('DOMContentLoaded', () => {
+  cargarEspacios();
 
-document.addEventListener('DOMContentLoaded', cargarEspacios);
+  const form = document.getElementById('form-recomendacion');
+  const mensajeEstado = document.getElementById('mensaje-estado-recomendacion');
+
+  form.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+
+    const boton = form.querySelector('button[type="submit"]');
+    boton.disabled = true;
+    boton.textContent = 'Enviando...';
+
+    const { error } = await supabaseClient
+      .from('recomendaciones_espacios')
+      .insert({ mensaje: form.mensaje.value });
+
+    boton.disabled = false;
+    boton.textContent = 'Enviar';
+
+    if (error) {
+      console.error('Error al enviar recomendación:', error);
+      mensajeEstado.textContent = 'Hubo un problema al enviar. Intentá de nuevo.';
+      mensajeEstado.style.color = 'crimson';
+      return;
+    }
+
+    mensajeEstado.textContent = '¡Gracias por tu recomendación!';
+    mensajeEstado.style.color = 'green';
+    form.reset();
+  });
+});

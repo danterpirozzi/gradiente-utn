@@ -204,6 +204,13 @@ main > p {
   margin-top: 1.5rem;
 }
 
+/* Variante centrada: para grids con cantidad fija de tarjetas (como la home),
+   donde no queremos que la última fila quede pegada a la izquierda si sobra espacio */
+.grid-cards-centrado {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+  justify-content: center;
+}
+
 .card {
   background: var(--fondo-card);
   border: 1px solid var(--borde);
@@ -236,13 +243,25 @@ main > p {
   border-color: var(--celeste);
 }
 
+/* Excepción: en Espacios CEUTN las tarjetas no son "carpetas" navegables,
+   son directamente la info de cada lugar — sacamos la pestaña y el margen extra */
+#lista-espacios .card {
+  border-radius: 10px;
+  border-top: 3px solid var(--celeste);
+  margin-top: 0;
+}
+
+#lista-espacios .card::before {
+  display: none;
+}
+
 .card:hover::before {
   background: var(--rosa);
 }
 
 .card h3 {
   margin-bottom: 0.5rem;
-  color: var(--celeste-claro);
+  color: var(--texto-claro);
   font-size: 1.1rem;
 }
 
@@ -303,6 +322,61 @@ button[type="submit"]:hover {
   filter: brightness(1.1);
 }
 
+/* ---------- FAQ (acordeón) ---------- */
+.faq-item {
+  background: var(--fondo-card);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+}
+
+.faq-pregunta {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--texto-claro);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: left;
+  padding: 1.1rem 1.3rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.faq-icono {
+  color: var(--celeste);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-item.abierta .faq-icono {
+  transform: rotate(45deg); /* el "+" se convierte visualmente en "x" */
+  color: var(--rosa);
+}
+
+.faq-respuesta {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, padding 0.25s ease;
+  padding: 0 1.3rem;
+}
+
+.faq-item.abierta .faq-respuesta {
+  max-height: 400px;
+  padding: 0 1.3rem 1.1rem;
+}
+
+.faq-respuesta p {
+  color: var(--texto-mutado);
+  font-size: 0.92rem;
+}
+
 /* ---------- BREADCRUMB (navegación de carpetas) ---------- */
 #breadcrumb a, #breadcrumb-apuntec a {
   color: var(--celeste);
@@ -359,6 +433,16 @@ footer::before {
   width: 60px;
   height: 2px;
   background: var(--rosa);
+}
+
+#footer-redes a {
+  color: var(--celeste);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#footer-redes a:hover {
+  color: var(--rosa);
 }
 
 /* ---------- RESPONSIVE ---------- */

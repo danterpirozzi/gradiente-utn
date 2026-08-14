@@ -22,6 +22,7 @@
       <a href="paginas/info-importante.html">Info importante</a>
       <a href="paginas/espacios-ceutn.html">Espacios CEUTN</a>
       <a href="paginas/links.html">Links</a>
+      <a href="paginas/faq.html">FAQ</a>
       <a href="paginas/contacto.html">Sumate</a>
     </nav>
   </header>
@@ -35,7 +36,7 @@
       </div>
     </section>
 
-    <section class="grid-cards">
+    <section class="grid-cards grid-cards-centrado">
       <a href="paginas/novedades.html" class="card">
         <h3>Novedades</h3>
         <p>Enterate de las últimas noticias del centro y la facultad.</p>
@@ -61,6 +62,11 @@
         <p>Discord, Instagram, YouTube y más accesos directos.</p>
       </a>
 
+      <a href="paginas/faq.html" class="card">
+        <h3>Preguntas frecuentes</h3>
+        <p>Respuestas rápidas a las dudas más comunes.</p>
+      </a>
+
       <a href="paginas/contacto.html" class="card">
         <h3>Sumate</h3>
         <p>¿Querés ser parte de Gradiente? Contactanos.</p>
@@ -70,8 +76,12 @@
 
   <footer>
     &copy; 2026 Gradiente — Centro de Estudiantes UTN FRRo
+    <p id="footer-redes" style="margin-top: 0.5rem; font-size: 0.8rem;"></p>
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/footer-redes.js"></script>
 </body>
 </html>
