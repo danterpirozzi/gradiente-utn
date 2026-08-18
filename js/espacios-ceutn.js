@@ -26,7 +26,13 @@ async function cargarEspacios() {
   data.forEach((espacio) => {
     const tarjeta = document.createElement('div');
     tarjeta.className = 'card';
+
+    const imagenHtml = espacio.imagen_url
+      ? `<img src="${espacio.imagen_url}" alt="${espacio.nombre}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 0.8rem; display: block;">`
+      : '';
+
     tarjeta.innerHTML = `
+      ${imagenHtml}
       <h3>${espacio.nombre}</h3>
       <p>${espacio.descripcion ?? ''}</p>
       ${espacio.horario ? `<p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--celeste-claro);">🕒 ${espacio.horario}</p>` : ''}

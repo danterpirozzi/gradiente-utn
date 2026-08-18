@@ -40,7 +40,7 @@ async function cargarNovedades() {
 
     // La imagen es opcional: si no hay imagen_url cargada, no se muestra nada (sin huecos raros)
     const imagenHtml = novedad.imagen_url
-      ? `<img src="${novedad.imagen_url}" alt="${novedad.titulo}" style="width: 100%; border-radius: 8px; margin-bottom: 0.8rem; display: block;">`
+      ? `<img src="${novedad.imagen_url}" alt="${novedad.titulo}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 0.8rem; display: block;">`
       : '';
 
     // El botón de link también es opcional (ej: "Anotate acá" -> Google Form)

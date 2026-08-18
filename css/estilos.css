@@ -268,6 +268,7 @@ main > p {
 .card p {
   color: var(--texto-mutado);
   font-size: 0.92rem;
+  white-space: pre-line;
 }
 
 /* Acento rosa para destacar elementos puntuales (ej: título de sección) */
@@ -320,6 +321,28 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   filter: brightness(1.1);
+}
+
+/* ---------- CARRUSEL DE FOTOS ---------- */
+.carrusel-flecha {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.carrusel-flecha:hover {
+  background: var(--celeste);
+  color: var(--azul-oscuro);
 }
 
 /* ---------- FAQ (acordeón) ---------- */
@@ -375,6 +398,22 @@ button[type="submit"]:hover {
 .faq-respuesta p {
   color: var(--texto-mutado);
   font-size: 0.92rem;
+}
+
+/* Ítems que NO son carpetas (archivos, links sueltos): sin la pestaña de carpeta,
+   con un borde izquierdo en vez de la pestaña arriba, para diferenciarlos visualmente */
+.card-item {
+  margin-top: 0;
+  border-radius: 10px;
+  border-left: 3px solid var(--celeste);
+}
+
+.card-item::before {
+  display: none;
+}
+
+.card-item:hover {
+  border-left-color: var(--rosa);
 }
 
 /* ---------- BREADCRUMB (navegación de carpetas) ---------- */

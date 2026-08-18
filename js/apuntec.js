@@ -87,7 +87,7 @@ function renderizarContenidoApuntec(subcarpetas, items) {
 
   items.forEach((item) => {
     const tarjeta = document.createElement(item.archivo_url ? 'a' : 'div');
-    tarjeta.className = 'card';
+    tarjeta.className = 'card card-item';
     if (item.archivo_url) {
       tarjeta.href = item.archivo_url;
       tarjeta.target = '_blank';
