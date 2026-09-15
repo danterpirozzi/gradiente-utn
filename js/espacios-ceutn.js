@@ -28,7 +28,7 @@ async function cargarEspacios() {
     tarjeta.className = 'card';
 
     const imagenHtml = espacio.imagen_url
-      ? `<img src="${espacio.imagen_url}" alt="${espacio.nombre}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 0.8rem; display: block;">`
+      ? `<img src="${espacio.imagen_url}" alt="${espacio.nombre}" class="media-estandar" loading="lazy">`
       : '';
 
     tarjeta.innerHTML = `

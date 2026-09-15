@@ -74,8 +74,8 @@ function renderizarContenidoApuntec(subcarpetas, items) {
   subcarpetas.forEach((carpeta) => {
     const tarjeta = document.createElement('a');
     tarjeta.href = '#';
-    tarjeta.className = 'card';
-    tarjeta.innerHTML = `<h3>📁 ${carpeta.nombre}</h3>`;
+    tarjeta.className = 'card-folder';
+    tarjeta.innerHTML = `${ICONO_CARPETA}<h3>${carpeta.nombre}</h3>`;
     tarjeta.addEventListener('click', (e) => {
       e.preventDefault();
       caminoCarpetasApuntec.push({ id: carpeta.id, nombre: carpeta.nombre });
@@ -93,7 +93,7 @@ function renderizarContenidoApuntec(subcarpetas, items) {
       tarjeta.target = '_blank';
       tarjeta.rel = 'noopener noreferrer';
     }
-    tarjeta.innerHTML = `<h3>📄 ${item.titulo}</h3>`;
+    tarjeta.innerHTML = `${ICONO_ARCHIVO}<div class="card-item-texto"><h3>${item.titulo}</h3></div>`;
     grid.appendChild(tarjeta);
   });
 

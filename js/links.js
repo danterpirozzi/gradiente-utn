@@ -26,12 +26,12 @@ async function cargarLinks() {
 
   data.forEach((link) => {
     const tarjeta = document.createElement('a');
-    tarjeta.className = 'card';
+    tarjeta.className = 'card card-item';
     tarjeta.href = link.url;
     tarjeta.target = '_blank'; // abre en pestaña nueva
     tarjeta.rel = 'noopener noreferrer';
 
-    tarjeta.innerHTML = `<h3>${link.nombre}</h3>`;
+    tarjeta.innerHTML = `${ICONO_LINK}<div class="card-item-texto"><h3>${link.nombre}</h3></div>`;
 
     contenedor.appendChild(tarjeta);
   });

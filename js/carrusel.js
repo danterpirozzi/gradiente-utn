@@ -1,9 +1,11 @@
 // ===========================================
-// GRADIENTE UTN — Carrusel de fotos (Sumate)
+// GRADIENTE UTN — Mural de fotos continuo (Sumate)
 // ===========================================
-
-let fotosCarrusel = [];
-let indiceActual = 0;
+// A diferencia del carrusel anterior (una foto + flechas), esto arma una
+// tira horizontal con todas las fotos, que se desplaza sola en loop infinito
+// (tipo mural). Para que el loop sea perfecto sin "salto", duplicamos la
+// lista de fotos una vez: cuando la tira llega a la mitad (donde termina la
+// copia original), reinicia a 0 y como la copia es idéntica no se nota.
 
 async function cargarCarrusel() {
   const contenedor = document.getElementById('carrusel-fotos');
@@ -15,46 +17,36 @@ async function cargarCarrusel() {
     .order('orden', { ascending: true });
 
   if (error || !data || data.length === 0) {
-    // Si no hay fotos cargadas, ocultamos el carrusel entero (no mostramos un hueco vacío)
+    // Si no hay fotos cargadas, ocultamos el mural entero (no mostramos un hueco vacío)
     contenedor.style.display = 'none';
     return;
   }
 
-  fotosCarrusel = data;
-  indiceActual = 0;
-  renderizarCarrusel();
+  renderizarMural(data);
 }
 
-function renderizarCarrusel() {
-  const imagen = document.getElementById('carrusel-imagen');
-  const indicador = document.getElementById('carrusel-indicador');
+function renderizarMural(fotos) {
+  const pista = document.getElementById('mural-pista');
+  if (!pista) return;
 
-  const foto = fotosCarrusel[indiceActual];
-  imagen.src = foto.imagen_url;
-  imagen.alt = foto.descripcion || 'Equipo de Gradiente';
+  // Si hay muy pocas fotos, duplicamos varias veces para que la tira sea
+  // lo bastante larga y el desplazamiento se vea continuo desde ya
+  let fotosParaMostrar = fotos;
+  while (fotosParaMostrar.length < 6) {
+    fotosParaMostrar = fotosParaMostrar.concat(fotos);
+  }
 
-  indicador.textContent = `${indiceActual + 1} / ${fotosCarrusel.length}`;
+  // Duplicamos la tira completa una vez más: es lo que permite el loop sin cortes
+  const fotosDuplicadas = fotosParaMostrar.concat(fotosParaMostrar);
 
-  // Si solo hay una foto, no tiene sentido mostrar las flechas de navegación
-  const flechas = document.querySelectorAll('.carrusel-flecha');
-  flechas.forEach((f) => f.style.display = fotosCarrusel.length > 1 ? 'flex' : 'none');
+  pista.innerHTML = fotosDuplicadas
+    .map((foto) => `<img class="mural-foto" src="${foto.imagen_url}" alt="${foto.descripcion || 'Equipo de Gradiente'}" loading="lazy">`)
+    .join('');
+
+  // Si hay pocas fotos únicas, el mural se mueve más lento (para que se disfrute cada una);
+  // con más fotos, un poco más rápido para no hacerlo eterno
+  const duracion = Math.max(18, fotosParaMostrar.length * 4.5);
+  pista.style.animationDuration = `${duracion}s`;
 }
 
-function carruselSiguiente() {
-  indiceActual = (indiceActual + 1) % fotosCarrusel.length;
-  renderizarCarrusel();
-}
-
-function carruselAnterior() {
-  indiceActual = (indiceActual - 1 + fotosCarrusel.length) % fotosCarrusel.length;
-  renderizarCarrusel();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  cargarCarrusel();
-
-  const btnSiguiente = document.getElementById('carrusel-siguiente');
-  const btnAnterior = document.getElementById('carrusel-anterior');
-  if (btnSiguiente) btnSiguiente.addEventListener('click', carruselSiguiente);
-  if (btnAnterior) btnAnterior.addEventListener('click', carruselAnterior);
-});
+document.addEventListener('DOMContentLoaded', cargarCarrusel);
