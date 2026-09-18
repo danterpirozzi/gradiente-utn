@@ -1,17 +1,26 @@
 // ===========================================
 // GRADIENTE UTN — Novedades (conectado a Supabase)
 // ===========================================
+// Esta función se usa en dos lugares:
+//  - En la home (index.html), mostrando solo las últimas (limite=3)
+//  - En paginas/novedades.html, mostrando el archivo completo (sin límite)
 
-async function cargarNovedades() {
-  const contenedor = document.getElementById('lista-novedades');
-  mostrarSkeleton(contenedor, 3);
+async function cargarNovedades(idContenedor = 'lista-novedades', limite = null) {
+  const contenedor = document.getElementById(idContenedor);
+  if (!contenedor) return;
 
-  // Pedimos todas las filas de la tabla "novedades",
-  // ordenadas por fecha (la más nueva primero)
-  const { data, error } = await supabaseClient
+  mostrarSkeleton(contenedor, limite || 3);
+
+  let consulta = supabaseClient
     .from('novedades')
     .select('*')
     .order('fecha', { ascending: false });
+
+  if (limite) {
+    consulta = consulta.limit(limite);
+  }
+
+  const { data, error } = await consulta;
 
   if (error) {
     console.error('Error al cargar novedades:', error);
@@ -24,7 +33,6 @@ async function cargarNovedades() {
     return;
   }
 
-  // Vaciamos el contenido de prueba y lo reemplazamos con datos reales
   contenedor.innerHTML = '';
 
   data.forEach((novedad) => {
@@ -35,7 +43,7 @@ async function cargarNovedades() {
       .toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
 
     // Armamos el texto para compartir: título + cuerpo + link a la página de Novedades
-    const textoCompartir = `📢 ${novedad.titulo}\n\n${novedad.cuerpo}\n\nMás novedades en: ${window.location.href}`;
+    const textoCompartir = `📢 ${novedad.titulo}\n\n${novedad.cuerpo}\n\nMás novedades en: ${window.location.origin}${window.location.pathname.includes('/paginas/') ? '' : '/paginas'}/novedades.html`;
     const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(textoCompartir)}`;
 
     // La imagen es opcional: si no hay imagen_url cargada, no se muestra nada (sin huecos raros)
@@ -69,5 +77,12 @@ async function cargarNovedades() {
   });
 }
 
-// Ejecutamos apenas carga la página
-document.addEventListener('DOMContentLoaded', cargarNovedades);
+// En la home mostramos solo las 3 últimas; en la página de Novedades, todas
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('inicio-novedades')) {
+    cargarNovedades('inicio-novedades', 3);
+  }
+  if (document.getElementById('lista-novedades')) {
+    cargarNovedades('lista-novedades');
+  }
+});

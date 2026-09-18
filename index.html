@@ -36,12 +36,17 @@
       </div>
     </section>
 
-    <section class="grid-cards grid-cards-centrado">
-      <a href="paginas/novedades.html" class="card">
-        <h3>Novedades</h3>
-        <p>Enterate de las últimas noticias del centro y la facultad.</p>
-      </a>
+    <section class="seccion-inicio">
+      <div class="seccion-inicio-encabezado">
+        <h2>Últimas novedades</h2>
+        <a href="paginas/novedades.html" class="ver-todas">Ver todas →</a>
+      </div>
+      <section class="grid-cards grid-cards-media" id="inicio-novedades">
+        <p>Cargando...</p>
+      </section>
+    </section>
 
+    <section class="grid-cards grid-cards-centrado">
       <a href="paginas/apuntec.html" class="card">
         <h3>APUNTEC</h3>
         <p>Resúmenes, parciales, finales y libros de todas las materias.</p>
@@ -75,13 +80,40 @@
   </main>
 
   <footer>
-    &copy; 2026 Gradiente — Centro de Estudiantes UTN FRRo
-    <p id="footer-redes" style="margin-top: 0.5rem; font-size: 0.8rem;"></p>
+    <div class="footer-grid">
+      <div class="footer-marca">
+        <img src="img/logo-horizontal.png" alt="Gradiente">
+        <p>Centro de Estudiantes de la UTN Facultad Regional Rosario.</p>
+      </div>
+
+      <div>
+        <p class="footer-titulo">Accesos rápidos</p>
+        <nav class="footer-nav">
+          <a href="paginas/novedades.html">Novedades</a>
+          <a href="paginas/apuntec.html">APUNTEC</a>
+          <a href="paginas/info-importante.html">Info importante</a>
+          <a href="paginas/espacios-ceutn.html">Espacios CEUTN</a>
+          <a href="paginas/links.html">Links</a>
+          <a href="paginas/faq.html">FAQ</a>
+          <a href="paginas/contacto.html">Sumate</a>
+        </nav>
+      </div>
+
+      <div>
+        <p class="footer-titulo">Seguinos</p>
+        <p id="footer-redes"></p>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <p>&copy; 2026 Gradiente — Centro de Estudiantes UTN FRRo</p>
+    </div>
   </footer>
 
   <script src="js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/footer-redes.js"></script>
+  <script src="js/novedades.js"></script>
 </body>
 </html>

@@ -242,6 +242,37 @@ main > p {
   justify-content: center;
 }
 
+/* ---------- SECCIÓN "ÚLTIMAS NOVEDADES" EN LA HOME ---------- */
+.seccion-inicio {
+  margin-bottom: 3rem;
+}
+
+.seccion-inicio-encabezado {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.seccion-inicio-encabezado h2 {
+  font-size: 1.5rem;
+  color: var(--texto-claro);
+}
+
+.ver-todas {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--celeste);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ver-todas:hover {
+  color: var(--rosa);
+}
+
 .card {
   background: var(--fondo-card);
   border: 1px solid var(--borde);
@@ -396,8 +427,10 @@ button[type="submit"]:hover {
   border-radius: var(--radio);
   border: 1px solid var(--borde);
   border-top: 3px solid var(--celeste);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  padding: 1rem;
+  background: var(--fondo-card);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
 }
 
 .mural-pista {
@@ -412,12 +445,14 @@ button[type="submit"]:hover {
 
 .mural-foto {
   flex-shrink: 0;
-  width: 220px;
-  height: 300px;
+  width: 300px;
+  height: 400px;
   object-fit: cover;
-  margin-right: 0.9rem;
-  border-radius: 8px;
+  margin-right: 1.1rem;
+  border-radius: 10px;
   background: var(--azul-medio);
+  box-shadow: var(--sombra);
+  border: 1px solid var(--borde);
 }
 
 @keyframes mural-desplazamiento {
@@ -425,10 +460,14 @@ button[type="submit"]:hover {
   to { transform: translateX(-50%); }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .mural-foto {
-    width: 160px;
-    height: 220px;
+    width: 220px;
+    height: 290px;
+    margin-right: 0.8rem;
+  }
+  .mural-contenedor {
+    padding: 0.7rem;
   }
 }
 
@@ -531,10 +570,14 @@ button[type="submit"]:hover {
 }
 
 /* ---------- IMÁGENES ESTANDARIZADAS (novedades / espacios CEUTN) ---------- */
-/* Formato vertical fijo: cualquier foto que se suba se acomoda sola, recortada al centro */
+/* Formato vertical fijo siempre (también en mobile): cualquier foto que se suba
+   se acomoda sola, recortada al centro. El max-height es un techo de seguridad
+   para que, aunque la tarjeta se estire mucho en pantallas anchas, la foto no
+   se vuelva gigante. */
 .media-estandar {
   width: 100%;
   aspect-ratio: 3 / 4;
+  max-height: 320px;
   object-fit: cover;
   object-position: center;
   border-radius: 8px;
@@ -543,10 +586,12 @@ button[type="submit"]:hover {
   background: var(--azul-medio);
 }
 
-@media (max-width: 480px) {
-  .media-estandar {
-    aspect-ratio: 4 / 3;
-  }
+/* Grillas de fotos (Novedades / Espacios CEUTN): a diferencia de las carpetas,
+   acá NO queremos que las tarjetas se estiren para llenar todo el ancho de
+   pantalla en PC, porque eso agranda la foto de más. Las mantenemos en un
+   ancho prolijo, como en la home. */
+.grid-cards-media {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
 }
 
 /* ---------- BREADCRUMB (navegación de carpetas) ---------- */
@@ -588,8 +633,7 @@ button[type="submit"]:hover {
 
 /* ---------- FOOTER ---------- */
 footer {
-  text-align: center;
-  padding: 1.5rem;
+  padding: 2.8rem 1.5rem 1.6rem;
   color: var(--texto-mutado);
   font-size: 0.85rem;
   border-top: 1px solid var(--borde);
@@ -604,13 +648,80 @@ footer::before {
   transform: translateX(-50%);
   width: 60px;
   height: 2px;
-  background: var(--rosa);
+  background: linear-gradient(90deg, var(--celeste), var(--rosa));
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.footer-marca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-marca img {
+  height: 34px;
+  width: auto;
+}
+
+.footer-marca p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--texto-mutado);
+  max-width: 240px;
+}
+
+.footer-titulo {
+  color: var(--texto-claro);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.9rem;
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.footer-nav a {
+  color: var(--texto-mutado);
+  text-decoration: none;
+  font-size: 0.87rem;
+  transition: color 0.15s ease, padding-left 0.15s ease;
+  width: fit-content;
+}
+
+.footer-nav a:hover {
+  color: var(--celeste);
+  padding-left: 0.25rem;
+}
+
+.footer-base {
+  max-width: 1000px;
+  margin: 2.2rem auto 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--borde);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  font-size: 0.78rem;
 }
 
 #footer-redes {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 0.6rem;
 }
 
@@ -638,6 +749,33 @@ footer::before {
 #footer-redes a:nth-child(3n+2):hover {
   color: var(--rosa);
   border-color: var(--rosa);
+}
+
+@media (max-width: 700px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-marca {
+    grid-column: 1 / -1;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-marca p {
+    max-width: none;
+  }
+  .footer-titulo {
+    text-align: center;
+  }
+  .footer-nav {
+    align-items: center;
+  }
+  .footer-base {
+    justify-content: center;
+    text-align: center;
+  }
+  #footer-redes {
+    justify-content: center;
+  }
 }
 
 /* ---------- RESPONSIVE ---------- */
