@@ -278,6 +278,7 @@ main > p {
    tarjetas de la grilla de abajo */
 #inicio-novedades.grid-cards-media {
   grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
+  justify-content: center;
 }
 
 #inicio-novedades .card {
@@ -749,8 +750,8 @@ footer::before {
 
 #footer-redes {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 1rem;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
 #footer-redes a {
@@ -762,6 +763,7 @@ footer::before {
   font-weight: 600;
   font-size: 0.87rem;
   transition: color 0.15s ease, padding-left 0.15s ease;
+  width: fit-content;
 }
 
 #footer-redes a:hover {
@@ -799,7 +801,7 @@ footer::before {
     text-align: center;
   }
   #footer-redes {
-    justify-content: center;
+    align-items: center;
   }
 }
 
