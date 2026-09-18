@@ -276,9 +276,10 @@ main > p {
 /* Vista previa compacta: en la home mostramos las novedades más chicas que en
    el archivo completo, para que no le ganen en peso visual al resto de las
    tarjetas de la grilla de abajo */
-#inicio-novedades.grid-cards-media {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
-  justify-content: center;
+/* Reutiliza el mismo ancho de columna que la grilla de tarjetas de abajo,
+   para que ambas filas queden alineadas en el mismo eje vertical */
+#inicio-novedades.grid-cards-centrado {
+  margin-top: 1.5rem;
 }
 
 #inicio-novedades .card {
@@ -315,6 +316,38 @@ main > p {
   transform: translateY(-3px);
   background: var(--azul-medio);
   border-color: var(--celeste);
+}
+
+/* Insignia celeste permanente en las tarjetas principales de la home:
+   un círculo con flecha, en la línea de las flechitas ya usadas en el sitio
+   ("Ver todas →"), en vez del marcador anterior */
+.card-inicio {
+  padding-right: 3.2rem;
+}
+
+.card-inicio::after {
+  content: "→";
+  position: absolute;
+  top: 1.3rem;
+  right: 1.3rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--celeste);
+  border: 1.5px solid var(--celeste);
+  background: rgba(24, 191, 227, 0.08);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.card-inicio:hover::after {
+  background: var(--celeste);
+  color: var(--azul-oscuro);
+  transform: translateX(2px);
 }
 
 /* Excepción: en Espacios CEUTN las tarjetas no son "carpetas" navegables,
@@ -777,10 +810,11 @@ footer::before {
 
 @media (max-width: 700px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    justify-items: center;
   }
   .footer-marca {
-    grid-column: 1 / -1;
     align-items: center;
     text-align: center;
   }
