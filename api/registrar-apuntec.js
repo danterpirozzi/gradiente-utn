@@ -21,15 +21,15 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { adminClave, carpetaId, titulo, archivoUrl } = req.body || {};
+  const { adminClave, carpetaId, titulo, categoria, archivoUrl } = req.body || {};
 
   if (adminClave !== process.env.ADMIN_PASSWORD) {
     res.status(401).json({ error: 'Clave de administración incorrecta' });
     return;
   }
 
-  if (!carpetaId || !titulo || !archivoUrl) {
-    res.status(400).json({ error: 'Faltan datos: carpetaId, titulo o archivoUrl' });
+  if (!carpetaId || !titulo || !categoria || !archivoUrl) {
+    res.status(400).json({ error: 'Faltan datos: carpetaId, titulo, categoria o archivoUrl' });
     return;
   }
 
@@ -53,6 +53,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         carpeta_id: carpetaId,
         titulo,
+        categoria,
         archivo_url: archivoUrl,
         estado: 'aprobado', // lo sube el admin, así que ya queda publicado
       }),

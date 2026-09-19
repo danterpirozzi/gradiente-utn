@@ -114,7 +114,7 @@ async function subirArchivoAGithub({ token, owner, repo, carpetaId, titulo, arch
   return `https://cdn.jsdelivr.net/gh/${owner}/${repo}@main/${ruta}`;
 }
 
-async function registrarEnSupabase({ adminClave, carpetaId, titulo, archivoUrl }) {
+async function registrarEnSupabase({ adminClave, carpetaId, titulo, categoria, archivoUrl }) {
   const respuesta = await fetch('/api/registrar-apuntec', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -122,6 +122,7 @@ async function registrarEnSupabase({ adminClave, carpetaId, titulo, archivoUrl }
       adminClave,
       carpetaId: Number(carpetaId),
       titulo,
+      categoria,
       archivoUrl,
     }),
   });
@@ -159,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminClave = document.getElementById('input-admin-clave').value;
     const carpetaId = document.getElementById('select-carpeta').value;
     const titulo = document.getElementById('input-titulo').value.trim();
+    const categoria = document.getElementById('input-categoria').value.trim();
     const archivo = document.getElementById('input-archivo').files[0];
 
     if (!token || !owner || !repo || !adminClave) {
@@ -166,9 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mensaje.textContent = 'Completá las credenciales de la sesión antes de subir.';
       return;
     }
-    if (!carpetaId || !titulo || !archivo) {
+    if (!carpetaId || !titulo || !categoria || !archivo) {
       mensaje.style.color = 'var(--rosa)';
-      mensaje.textContent = 'Completá carpeta, título y archivo.';
+      mensaje.textContent = 'Completá carpeta, título, categoría y archivo.';
       return;
     }
 
@@ -180,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const archivoUrl = await subirArchivoAGithub({ token, owner, repo, carpetaId, titulo, archivo });
 
       actualizarProgreso(70, 'Registrando en la base de datos...');
-      await registrarEnSupabase({ adminClave, carpetaId, titulo, archivoUrl });
+      await registrarEnSupabase({ adminClave, carpetaId, titulo, categoria, archivoUrl });
 
       actualizarProgreso(100, '✔ Material subido y publicado correctamente.');
       mensaje.style.color = 'var(--celeste)';

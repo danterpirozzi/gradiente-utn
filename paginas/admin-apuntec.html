@@ -99,6 +99,21 @@
         </label>
 
         <label>
+          Categoría
+          <input type="text" id="input-categoria" class="campo-admin" style="margin-top: 0.3rem;" required
+                 list="sugerencias-categoria" placeholder="Ej: Parcial, Resumen, Libro, Guía...">
+          <datalist id="sugerencias-categoria">
+            <option value="Resumen">
+            <option value="Parcial">
+            <option value="Final">
+            <option value="Libro">
+            <option value="Guía de ejercicios">
+            <option value="Apunte de clase">
+          </datalist>
+        </label>
+        <p class="ayuda-campo">Texto libre — podés escribir la que quieras, estas son solo sugerencias.</p>
+
+        <label>
           Archivo (PDF, hasta 100MB)
           <input type="file" id="input-archivo" class="campo-admin" style="margin-top: 0.3rem;" accept="application/pdf" required>
         </label>
