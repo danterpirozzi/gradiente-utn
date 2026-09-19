@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subir material — Gradiente UTN</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <style>
+    .campo-admin {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--borde);
+      background: var(--fondo-card);
+      color: var(--texto-claro);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .ayuda-campo {
+      font-size: 0.78rem;
+      color: var(--texto-mutado);
+      margin-top: 0.2rem;
+    }
+    .barra-progreso-cont {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--azul-medio);
+      overflow: hidden;
+      display: none;
+    }
+    .barra-progreso {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--celeste), var(--rosa));
+      transition: width 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="logo">
+      <img src="../img/logo.png" alt="Gradiente">
+    </a>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="apuntec.html">Volver a APUNTEC</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Subir material a APUNTEC</h1>
+    <p>Panel interno para el equipo de Gradiente. No es un formulario público — requiere el token de GitHub del repo de material y la clave de administración.</p>
+
+    <div style="max-width: 560px; margin: 2rem 0;">
+
+      <!-- Paso 0: credenciales de esta sesión (no se guardan en ningún lado, solo en este navegador mientras dura la pestaña) -->
+      <section id="bloque-credenciales" style="margin-bottom: 2rem; padding: 1.2rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--fondo-card);">
+        <h3 style="margin-bottom: 0.8rem;">Credenciales de esta sesión</h3>
+
+        <label>
+          Token de GitHub (fine-grained, con permiso Contents: Read/Write sobre el repo de material)
+          <input type="password" id="input-github-token" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+        </label>
+        <p class="ayuda-campo">Nunca se envía a nuestro servidor ni se guarda: se usa desde tu navegador para hablar directo con la API de GitHub, y se pierde al cerrar la pestaña.</p>
+
+        <label style="display: block; margin-top: 1rem;">
+          Usuario/organización de GitHub
+          <input type="text" id="input-github-owner" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: danterpirozzi">
+        </label>
+
+        <label style="display: block; margin-top: 1rem;">
+          Nombre del repo de material
+          <input type="text" id="input-github-repo" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: gradiente-material">
+        </label>
+
+        <label style="display: block; margin-top: 1rem;">
+          Clave de administración del sitio
+          <input type="password" id="input-admin-clave" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+        </label>
+        <p class="ayuda-campo">La que configuramos como variable de entorno ADMIN_PASSWORD en Vercel.</p>
+      </section>
+
+      <!-- Paso 1: datos del material -->
+      <form id="form-subir-apuntec" style="display: flex; flex-direction: column; gap: 1rem;">
+        <label>
+          Carpeta destino (dentro de APUNTEC)
+          <select id="select-carpeta" class="campo-admin" style="margin-top: 0.3rem;" required>
+            <option value="">Cargando carpetas...</option>
+          </select>
+        </label>
+
+        <label>
+          Título del material
+          <input type="text" id="input-titulo" class="campo-admin" style="margin-top: 0.3rem;" required placeholder="Ej: Parcial 1 - 2024">
+        </label>
+
+        <label>
+          Archivo (PDF, hasta 100MB)
+          <input type="file" id="input-archivo" class="campo-admin" style="margin-top: 0.3rem;" accept="application/pdf" required>
+        </label>
+
+        <div class="barra-progreso-cont" id="cont-progreso">
+          <div class="barra-progreso" id="barra-progreso"></div>
+        </div>
+
+        <button type="submit" id="btn-subir"
+                style="padding: 0.8rem; border: none; border-radius: 8px; background: var(--celeste); color: var(--azul-oscuro); font-weight: 700; cursor: pointer;">
+          Subir material
+        </button>
+
+        <p id="mensaje-estado-admin" style="font-weight: 600;"></p>
+      </form>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/admin-apuntec.js"></script>
+</body>
+</html>
