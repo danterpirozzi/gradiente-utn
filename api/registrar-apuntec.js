@@ -28,8 +28,15 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!carpetaId || !materia || !titulo || !categoria || !archivoUrl) {
-    res.status(400).json({ error: 'Faltan datos: carpetaId, materia, titulo, categoria o archivoUrl' });
+  const camposFaltantes = [];
+  if (!carpetaId) camposFaltantes.push('carpetaId');
+  if (!materia) camposFaltantes.push('materia');
+  if (!titulo) camposFaltantes.push('titulo');
+  if (!categoria) camposFaltantes.push('categoria');
+  if (!archivoUrl) camposFaltantes.push('archivoUrl');
+
+  if (camposFaltantes.length > 0) {
+    res.status(400).json({ error: `Faltan datos: ${camposFaltantes.join(', ')}` });
     return;
   }
 
