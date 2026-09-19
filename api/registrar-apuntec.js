@@ -21,15 +21,15 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { adminClave, carpetaId, titulo, categoria, archivoUrl } = req.body || {};
+  const { adminClave, carpetaId, materia, carrera, titulo, categoria, archivoUrl } = req.body || {};
 
   if (adminClave !== process.env.ADMIN_PASSWORD) {
     res.status(401).json({ error: 'Clave de administración incorrecta' });
     return;
   }
 
-  if (!carpetaId || !titulo || !categoria || !archivoUrl) {
-    res.status(400).json({ error: 'Faltan datos: carpetaId, titulo, categoria o archivoUrl' });
+  if (!carpetaId || !materia || !titulo || !categoria || !archivoUrl) {
+    res.status(400).json({ error: 'Faltan datos: carpetaId, materia, titulo, categoria o archivoUrl' });
     return;
   }
 
@@ -52,6 +52,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         carpeta_id: carpetaId,
+        materia,
+        carrera: carrera || null,
         titulo,
         categoria,
         archivo_url: archivoUrl,

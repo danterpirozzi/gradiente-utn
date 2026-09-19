@@ -114,13 +114,15 @@ async function subirArchivoAGithub({ token, owner, repo, carpetaId, titulo, arch
   return `https://cdn.jsdelivr.net/gh/${owner}/${repo}@main/${ruta}`;
 }
 
-async function registrarEnSupabase({ adminClave, carpetaId, titulo, categoria, archivoUrl }) {
+async function registrarEnSupabase({ adminClave, carpetaId, materia, carrera, titulo, categoria, archivoUrl }) {
   const respuesta = await fetch('/api/registrar-apuntec', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       adminClave,
       carpetaId: Number(carpetaId),
+      materia,
+      carrera, // puede venir vacío, la columna es opcional
       titulo,
       categoria,
       archivoUrl,
@@ -159,6 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const repo = document.getElementById('input-github-repo').value.trim();
     const adminClave = document.getElementById('input-admin-clave').value;
     const carpetaId = document.getElementById('select-carpeta').value;
+    const materia = document.getElementById('input-materia').value.trim();
+    const carrera = document.getElementById('input-carrera').value.trim();
     const titulo = document.getElementById('input-titulo').value.trim();
     const categoria = document.getElementById('input-categoria').value.trim();
     const archivo = document.getElementById('input-archivo').files[0];
@@ -168,9 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mensaje.textContent = 'Completá las credenciales de la sesión antes de subir.';
       return;
     }
-    if (!carpetaId || !titulo || !categoria || !archivo) {
+    if (!carpetaId || !materia || !titulo || !categoria || !archivo) {
       mensaje.style.color = 'var(--rosa)';
-      mensaje.textContent = 'Completá carpeta, título, categoría y archivo.';
+      mensaje.textContent = 'Completá carpeta, materia, título, categoría y archivo.';
       return;
     }
 
@@ -182,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const archivoUrl = await subirArchivoAGithub({ token, owner, repo, carpetaId, titulo, archivo });
 
       actualizarProgreso(70, 'Registrando en la base de datos...');
-      await registrarEnSupabase({ adminClave, carpetaId, titulo, categoria, archivoUrl });
+      await registrarEnSupabase({ adminClave, carpetaId, materia, carrera, titulo, categoria, archivoUrl });
 
       actualizarProgreso(100, '✔ Material subido y publicado correctamente.');
       mensaje.style.color = 'var(--celeste)';
