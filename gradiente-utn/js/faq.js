@@ -30,11 +30,11 @@ async function cargarFaqs() {
     item.className = 'faq-item';
     item.innerHTML = `
       <button class="faq-pregunta">
-        <span>${faq.pregunta}</span>
+        <span>${escaparHtml(faq.pregunta)}</span>
         <span class="faq-icono">+</span>
       </button>
       <div class="faq-respuesta">
-        <p>${faq.respuesta}</p>
+        <p>${escaparHtml(faq.respuesta)}</p>
       </div>
     `;
 

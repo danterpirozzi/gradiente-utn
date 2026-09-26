@@ -28,15 +28,15 @@ async function cargarEspacios() {
     tarjeta.className = 'card';
 
     const imagenHtml = espacio.imagen_url
-      ? `<img src="${espacio.imagen_url}" alt="${espacio.nombre}" class="media-estandar" loading="lazy">`
+      ? `<img src="${escaparHtml(espacio.imagen_url)}" alt="${escaparHtml(espacio.nombre)}" class="media-estandar" loading="lazy">`
       : '';
 
     tarjeta.innerHTML = `
       ${imagenHtml}
-      <h3>${espacio.nombre}</h3>
-      <p>${espacio.descripcion ?? ''}</p>
-      ${espacio.horario ? `<p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--celeste-claro);">🕒 ${espacio.horario}</p>` : ''}
-      ${espacio.ubicacion ? `<p style="font-size: 0.85rem; color: var(--celeste-claro);">📍 ${espacio.ubicacion}</p>` : ''}
+      <h3>${escaparHtml(espacio.nombre)}</h3>
+      <p>${escaparHtml(espacio.descripcion ?? '')}</p>
+      ${espacio.horario ? `<p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--celeste-claro);">🕒 ${escaparHtml(espacio.horario)}</p>` : ''}
+      ${espacio.ubicacion ? `<p style="font-size: 0.85rem; color: var(--celeste-claro);">📍 ${escaparHtml(espacio.ubicacion)}</p>` : ''}
     `;
     contenedor.appendChild(tarjeta);
   });

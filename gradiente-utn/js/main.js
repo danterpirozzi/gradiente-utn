@@ -21,6 +21,23 @@ const ICONO_LINK = `
     <path d="M14 10a4 4 0 0 0-5.7-.3l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/>
   </svg>`;
 
+// Escapa HTML antes de insertar cualquier texto que venga de una carga de
+// contenido (títulos, materias, nombres, etc.) dentro de innerHTML. Esto es
+// lo que evita que alguien pueda "inyectar" código malicioso escribiendo,
+// por ejemplo, un <script> como si fuera el título de un apunte — sin esto,
+// ese código se ejecutaría en el navegador de quien vea esa tarjeta
+// (incluido el admin revisando propuestas, con su token de GitHub tipeado
+// en la misma pantalla).
+function escaparHtml(texto) {
+  if (texto === null || texto === undefined) return '';
+  return String(texto)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // Muestra N tarjetas "skeleton" (efecto de carga) dentro de un contenedor.
 // Se usa en novedades.js, apuntec.js, links.js, info-importante.js y espacios-ceutn.js
 // para reemplazar el texto plano "Cargando..." por algo más prolijo.

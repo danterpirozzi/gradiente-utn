@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisar propuestas — Gradiente UTN</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <style>
+    .campo-admin {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--borde);
+      background: var(--fondo-card);
+      color: var(--texto-claro);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .tarjeta-propuesta {
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 1.3rem;
+      margin-bottom: 1.2rem;
+      background: var(--fondo-card);
+    }
+    .tarjeta-propuesta dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.3rem 0.8rem;
+      font-size: 0.9rem;
+      margin: 0.8rem 0;
+    }
+    .tarjeta-propuesta dt {
+      color: var(--texto-mutado);
+    }
+    .tarjeta-propuesta dd {
+      color: var(--texto-claro);
+    }
+    .fila-acciones {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      align-items: center;
+    }
+    .btn-aprobar {
+      padding: 0.55rem 1.1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--celeste);
+      color: var(--azul-oscuro);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-rechazar {
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--rosa);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--rosa);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-ver {
+      font-size: 0.85rem;
+      color: var(--celeste);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="logo">
+      <img src="../img/logo.png" alt="Gradiente">
+    </a>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="admin-apuntec.html">Subir material</a>
+      <a href="apuntec.html">Volver a APUNTEC</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Revisar propuestas de material</h1>
+    <p>Panel interno. Revisá cada propuesta, mirá el archivo, y aprobala (se publica en GitHub y en el sitio) o rechazala.</p>
+
+    <section id="bloque-credenciales" style="margin: 1.5rem 0; padding: 1.2rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--fondo-card); max-width: 560px;">
+      <h3 style="margin-bottom: 0.8rem;">Credenciales de esta sesión</h3>
+
+      <label>
+        Clave de administración del sitio
+        <input type="password" id="input-admin-clave" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Token de GitHub (necesario solo para aprobar, no para rechazar)
+        <input type="password" id="input-github-token" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Usuario/organización de GitHub
+        <input type="text" id="input-github-owner" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: danterpirozzi">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Nombre del repo de material
+        <input type="text" id="input-github-repo" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: gradiente-material">
+      </label>
+
+      <button type="button" id="btn-cargar-propuestas" class="btn-aprobar" style="margin-top: 1.2rem;">
+        Cargar propuestas pendientes
+      </button>
+    </section>
+
+    <div id="lista-propuestas"></div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/admin-propuestas.js"></script>
+</body>
+</html>

@@ -40,7 +40,7 @@ function renderizarMural(fotos) {
   const fotosDuplicadas = fotosParaMostrar.concat(fotosParaMostrar);
 
   pista.innerHTML = fotosDuplicadas
-    .map((foto) => `<img class="mural-foto" src="${foto.imagen_url}" alt="${foto.descripcion || 'Equipo de Gradiente'}" loading="lazy">`)
+    .map((foto) => `<img class="mural-foto" src="${escaparHtml(foto.imagen_url)}" alt="${escaparHtml(foto.descripcion || 'Equipo de Gradiente')}" loading="lazy">`)
     .join('');
 
   // Si hay pocas fotos únicas, el mural se mueve más lento (para que se disfrute cada una);

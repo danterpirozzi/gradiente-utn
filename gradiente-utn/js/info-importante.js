@@ -41,7 +41,7 @@ function renderizarBreadcrumb() {
 
   let html = `<a href="#" data-id="raiz">Info importante</a>`;
   caminoCarpetas.forEach((carpeta) => {
-    html += ` / <a href="#" data-id="${carpeta.id}">${carpeta.nombre}</a>`;
+    html += ` / <a href="#" data-id="${carpeta.id}">${escaparHtml(carpeta.nombre)}</a>`;
   });
   contenedor.innerHTML = html;
 
@@ -80,7 +80,7 @@ function renderizarContenido(subcarpetas, items) {
     const tarjeta = document.createElement('a');
     tarjeta.href = '#';
     tarjeta.className = 'card-folder';
-    tarjeta.innerHTML = `${ICONO_CARPETA}<h3>${carpeta.nombre}</h3>`;
+    tarjeta.innerHTML = `${ICONO_CARPETA}<h3>${escaparHtml(carpeta.nombre)}</h3>`;
     tarjeta.addEventListener('click', (e) => {
       e.preventDefault();
       entrarACarpeta(carpeta);
@@ -100,8 +100,8 @@ function renderizarContenido(subcarpetas, items) {
     tarjeta.innerHTML = `
       ${ICONO_ARCHIVO}
       <div class="card-item-texto">
-        <h3>${item.titulo}</h3>
-        <p>${item.descripcion ?? ''}</p>
+        <h3>${escaparHtml(item.titulo)}</h3>
+        <p>${escaparHtml(item.descripcion ?? '')}</p>
       </div>
     `;
     grid.appendChild(tarjeta);
