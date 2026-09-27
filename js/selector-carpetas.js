@@ -65,6 +65,11 @@ async function inicializarSelectorDeCarpetas() {
     <input type="hidden" id="select-carpeta" required>
 
     <div class="panel-selector-carpeta" id="panel-selector-carpeta" hidden>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <strong style="font-size: 0.85rem;">Elegir carpeta</strong>
+        <button type="button" id="btn-cerrar-selector-carpeta" aria-label="Cerrar"
+                style="background: transparent; border: none; color: var(--texto-mutado); font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 0.2rem 0.4rem;">✕</button>
+      </div>
       <input type="search" id="buscador-selector-carpeta" class="input-buscador" style="margin-bottom: 0.6rem;"
              placeholder="Buscar carpeta por nombre...">
       <p id="migas-selector-carpeta" style="font-size: 0.78rem; color: var(--texto-mutado); margin-bottom: 0.5rem;"></p>
@@ -171,6 +176,14 @@ async function inicializarSelectorDeCarpetas() {
   boton.addEventListener('click', () => {
     panel.hidden = !panel.hidden;
     if (!panel.hidden) buscador.focus();
+  });
+
+  contenedor.querySelector('#btn-cerrar-selector-carpeta').addEventListener('click', () => {
+    panel.hidden = true;
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
   });
 
   // Cerrar el panel si se hace clic afuera
