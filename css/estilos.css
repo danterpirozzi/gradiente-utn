@@ -712,6 +712,13 @@ button[type="submit"]:hover {
   flex-direction: column;
 }
 
+/* Sin esto, el atributo "hidden" no alcanza a ganarle a "display: flex" de
+   arriba (misma prioridad, y gana la regla más específica) — con esto sí,
+   así el panel realmente desaparece cuando se cierra. */
+.panel-selector-carpeta[hidden] {
+  display: none;
+}
+
 #migas-selector-carpeta {
   min-height: 1rem;
 }
