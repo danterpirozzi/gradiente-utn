@@ -15,46 +15,7 @@
 
 const TAMANIO_MAXIMO_MB = 40;
 
-async function cargarCarpetasEnSelectorPublico() {
-  const selector = document.getElementById('select-carpeta');
-
-  const { data: carpetas, error } = await supabaseClient
-    .from('carpetas')
-    .select('*')
-    .eq('seccion', 'apuntec')
-    .order('orden');
-
-  if (error || !carpetas) {
-    selector.innerHTML = '<option value="">No se pudieron cargar las carpetas</option>';
-    return;
-  }
-
-  const porPadre = {};
-  carpetas.forEach((c) => {
-    const clave = c.carpeta_padre_id ?? 'raiz';
-    if (!porPadre[clave]) porPadre[clave] = [];
-    porPadre[clave].push(c);
-  });
-
-  const opciones = [];
-  function agregarNivel(padreId, profundidad) {
-    const hijas = porPadre[padreId ?? 'raiz'] || [];
-    hijas.forEach((carpeta) => {
-      const prefijo = '— '.repeat(profundidad);
-      opciones.push({ id: carpeta.id, texto: `${prefijo}${carpeta.nombre}` });
-      agregarNivel(carpeta.id, profundidad + 1);
-    });
-  }
-  agregarNivel(null, 0);
-
-  if (opciones.length === 0) {
-    selector.innerHTML = '<option value="">No hay carpetas disponibles todavía</option>';
-    return;
-  }
-
-  selector.innerHTML = '<option value="">Elegí una carpeta...</option>' +
-    opciones.map((op) => `<option value="${op.id}">${op.texto}</option>`).join('');
-}
+// La carga de carpetas ahora la maneja js/selector-carpetas.js.
 
 function slugificarPublico(texto) {
   return texto
@@ -65,8 +26,6 @@ function slugificarPublico(texto) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  cargarCarpetasEnSelectorPublico();
-
   const form = document.getElementById('form-proponer');
   const mensaje = document.getElementById('mensaje-estado-propuesta');
   const boton = document.getElementById('btn-proponer');

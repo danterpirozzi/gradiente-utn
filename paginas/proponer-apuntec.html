@@ -66,10 +66,7 @@
 
         <label>
           Carpeta donde ubicarlo
-          <select id="select-carpeta" required
-                  style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde); margin-top: 0.3rem;">
-            <option value="">Cargando carpetas...</option>
-          </select>
+          <div data-selector-carpetas="apuntec" style="margin-top: 0.3rem;"></div>
         </label>
         <p style="font-size: 0.8rem; color: var(--texto-mutado); margin-top: -0.6rem;">
           Si no estás seguro/a de cuál es, elegí la que más se acerque — lo revisamos igual antes de publicarlo.
@@ -158,6 +155,7 @@
   <script src="../js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/selector-carpetas.js"></script>
   <script src="../js/footer-redes.js"></script>
   <script src="../js/proponer-apuntec.js"></script>
 </body>

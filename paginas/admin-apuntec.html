@@ -89,9 +89,7 @@
       <form id="form-subir-apuntec" style="display: flex; flex-direction: column; gap: 1rem;">
         <label>
           Carpeta destino (dentro de APUNTEC)
-          <select id="select-carpeta" class="campo-admin" style="margin-top: 0.3rem;" required>
-            <option value="">Cargando carpetas...</option>
-          </select>
+          <div data-selector-carpetas="apuntec" style="margin-top: 0.3rem;"></div>
         </label>
 
         <label>
@@ -146,6 +144,7 @@
   <script src="../js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/selector-carpetas.js"></script>
   <script src="../js/admin-apuntec.js"></script>
 </body>
 </html>

@@ -670,6 +670,116 @@ button[type="submit"]:hover {
   margin-top: 0.15rem;
 }
 
+/* ---------- SELECTOR DE CARPETAS (explorador visual) ---------- */
+[data-selector-carpetas] {
+  position: relative;
+}
+
+.boton-selector-carpeta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--fondo-card);
+  color: var(--texto-claro);
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.boton-selector-carpeta:hover {
+  border-color: var(--celeste);
+}
+
+.panel-selector-carpeta {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--fondo-card);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 0.9rem;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+#migas-selector-carpeta {
+  min-height: 1rem;
+}
+
+#migas-selector-carpeta a {
+  color: var(--celeste);
+  text-decoration: none;
+}
+
+#migas-selector-carpeta a:hover {
+  color: var(--rosa);
+}
+
+#lista-selector-carpeta {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.fila-carpeta-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 6px;
+  transition: background 0.12s ease;
+}
+
+.fila-carpeta-selector:hover {
+  background: var(--azul-medio);
+}
+
+.fila-carpeta-selector .icono-carpeta {
+  width: 18px;
+  height: 18px;
+  color: var(--celeste);
+  flex-shrink: 0;
+}
+
+.nombre-fila-carpeta {
+  flex: 1;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.entrar-fila-carpeta {
+  font-size: 0.75rem;
+  color: var(--texto-mutado);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-usar-carpeta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  background: var(--celeste);
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-usar-carpeta:hover {
+  background: var(--celeste-claro);
+}
+
 /* ---------- IMÁGENES ESTANDARIZADAS (novedades / espacios CEUTN) ---------- */
 /* Formato vertical fijo siempre (también en mobile): cualquier foto que se suba
    se acomoda sola, recortada al centro. El max-height es un techo de seguridad

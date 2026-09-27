@@ -29,42 +29,7 @@ function tituloDesdeNombreDeArchivo(nombreArchivo) {
   return conEspacios.charAt(0).toUpperCase() + conEspacios.slice(1);
 }
 
-async function cargarCarpetasEnSelectorLote() {
-  const selector = document.getElementById('select-carpeta');
-
-  const { data: carpetas, error } = await supabaseClient
-    .from('carpetas')
-    .select('*')
-    .eq('seccion', 'apuntec')
-    .order('orden');
-
-  if (error || !carpetas) {
-    selector.innerHTML = '<option value="">Error al cargar carpetas</option>';
-    return;
-  }
-
-  const porPadre = {};
-  carpetas.forEach((c) => {
-    const clave = c.carpeta_padre_id ?? 'raiz';
-    if (!porPadre[clave]) porPadre[clave] = [];
-    porPadre[clave].push(c);
-  });
-
-  const opciones = [];
-  function agregarNivel(padreId, profundidad) {
-    const hijas = porPadre[padreId ?? 'raiz'] || [];
-    hijas.forEach((carpeta) => {
-      const prefijo = '— '.repeat(profundidad);
-      opciones.push({ id: carpeta.id, texto: `${prefijo}${carpeta.nombre}` });
-      agregarNivel(carpeta.id, profundidad + 1);
-    });
-  }
-  agregarNivel(null, 0);
-
-  selector.innerHTML = opciones.length
-    ? opciones.map((op) => `<option value="${op.id}">${op.texto}</option>`).join('')
-    : '<option value="">No hay carpetas creadas todavía</option>';
-}
+// La carga de carpetas ahora la maneja js/selector-carpetas.js.
 
 function renderizarListaDeArchivos() {
   const contenedor = document.getElementById('lista-archivos');
@@ -146,8 +111,6 @@ async function subirUnArchivoDelLote({ token, owner, repo, carpetaId, titulo, ar
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  cargarCarpetasEnSelectorLote();
-
   document.getElementById('input-archivos').addEventListener('change', (e) => {
     const nuevos = Array.from(e.target.files).map((archivo, indice) => ({
       archivo,

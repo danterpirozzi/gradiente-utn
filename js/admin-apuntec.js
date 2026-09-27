@@ -15,50 +15,8 @@
 //      fila en Supabase usando la service_role key (con permiso para
 //      saltarse las políticas RLS de solo-lectura que tiene el resto del sitio).
 
-// Carga las carpetas de APUNTEC en el <select>, respetando la jerarquía
-// (carpeta_padre_id) para mostrar indentado "Materia > Subcarpeta".
-async function cargarCarpetasEnSelector() {
-  const selector = document.getElementById('select-carpeta');
-
-  const { data: carpetas, error } = await supabaseClient
-    .from('carpetas')
-    .select('*')
-    .eq('seccion', 'apuntec')
-    .order('orden');
-
-  if (error || !carpetas) {
-    selector.innerHTML = '<option value="">Error al cargar carpetas</option>';
-    return;
-  }
-
-  // Armamos las opciones en orden jerárquico: cada raíz, seguida de sus hijas
-  const porPadre = {};
-  carpetas.forEach((c) => {
-    const clave = c.carpeta_padre_id ?? 'raiz';
-    if (!porPadre[clave]) porPadre[clave] = [];
-    porPadre[clave].push(c);
-  });
-
-  const opciones = [];
-  function agregarNivel(padreId, profundidad) {
-    const hijas = porPadre[padreId ?? 'raiz'] || [];
-    hijas.forEach((carpeta) => {
-      const prefijo = '— '.repeat(profundidad);
-      opciones.push({ id: carpeta.id, texto: `${prefijo}${carpeta.nombre}` });
-      agregarNivel(carpeta.id, profundidad + 1);
-    });
-  }
-  agregarNivel(null, 0);
-
-  if (opciones.length === 0) {
-    selector.innerHTML = '<option value="">No hay carpetas creadas todavía</option>';
-    return;
-  }
-
-  selector.innerHTML = opciones
-    .map((op) => `<option value="${op.id}">${op.texto}</option>`)
-    .join('');
-}
+// La carga de carpetas ahora la maneja js/selector-carpetas.js (el widget
+// visual reemplazó al <select> viejo), así que esta función ya no hace falta acá.
 
 // Convierte un archivo a base64 puro (sin el prefijo "data:...;base64,")
 function archivoABase64(archivo) {
@@ -147,8 +105,6 @@ function actualizarProgreso(porcentaje, texto) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  cargarCarpetasEnSelector();
-
   const form = document.getElementById('form-subir-apuntec');
   const mensaje = document.getElementById('mensaje-estado-admin');
   const boton = document.getElementById('btn-subir');
