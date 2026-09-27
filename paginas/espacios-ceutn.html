@@ -56,6 +56,10 @@
       </p>
 
       <form id="form-recomendacion" style="max-width: 500px; display: flex; flex-direction: column; gap: 0.8rem;">
+        <label class="campo-honeypot" aria-hidden="true">
+          No completar este campo
+          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off">
+        </label>
         <textarea name="mensaje" required rows="3" placeholder="Escribí tu recomendación acá..."
                   style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--borde);"></textarea>
         <button type="submit"

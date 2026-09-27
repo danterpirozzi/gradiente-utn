@@ -49,8 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-recomendacion');
   const mensajeEstado = document.getElementById('mensaje-estado-recomendacion');
 
+  inicializarProteccionAntiSpam(form);
+
   form.addEventListener('submit', async (evento) => {
     evento.preventDefault();
+
+    if (esEnvioSospechoso(form)) {
+      mensajeEstado.textContent = '¡Gracias por tu recomendación!';
+      mensajeEstado.style.color = 'green';
+      form.reset();
+      return;
+    }
+
+    if (limiteDeEnvioAlcanzado('recomendacion-espacios')) {
+      mensajeEstado.textContent = 'Ya mandaste una recomendación hace muy poco — probá de nuevo en un rato.';
+      mensajeEstado.style.color = 'crimson';
+      return;
+    }
 
     const boton = form.querySelector('button[type="submit"]');
     boton.disabled = true;
@@ -70,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    registrarEnvio('recomendacion-espacios');
     mensajeEstado.textContent = '¡Gracias por tu recomendación!';
     mensajeEstado.style.color = 'green';
     form.reset();
