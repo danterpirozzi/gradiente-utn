@@ -38,7 +38,7 @@ function renderizarBreadcrumbApuntec() {
 
   let html = `<a href="#" data-id="raiz">APUNTEC</a>`;
   caminoCarpetasApuntec.forEach((carpeta) => {
-    html += ` / <a href="#" data-id="${carpeta.id}">${carpeta.nombre}</a>`;
+    html += ` / <a href="#" data-id="${carpeta.id}">${escaparHtml(carpeta.nombre)}</a>`;
   });
   contenedor.innerHTML = html;
 
@@ -75,7 +75,7 @@ function renderizarContenidoApuntec(subcarpetas, items) {
     const tarjeta = document.createElement('a');
     tarjeta.href = '#';
     tarjeta.className = 'card-folder';
-    tarjeta.innerHTML = `${ICONO_CARPETA}<h3>${carpeta.nombre}</h3>`;
+    tarjeta.innerHTML = `${ICONO_CARPETA}<h3>${escaparHtml(carpeta.nombre)}</h3>`;
     tarjeta.addEventListener('click', (e) => {
       e.preventDefault();
       caminoCarpetasApuntec.push({ id: carpeta.id, nombre: carpeta.nombre });
@@ -93,7 +93,7 @@ function renderizarContenidoApuntec(subcarpetas, items) {
       tarjeta.target = '_blank';
       tarjeta.rel = 'noopener noreferrer';
     }
-    tarjeta.innerHTML = `${ICONO_ARCHIVO}<div class="card-item-texto"><h3>${item.titulo}</h3></div>`;
+    tarjeta.innerHTML = `${ICONO_ARCHIVO}<div class="card-item-texto"><h3>${escaparHtml(item.titulo)}</h3></div>`;
     grid.appendChild(tarjeta);
   });
 
@@ -105,5 +105,80 @@ function irARaizApuntec() {
   carpetaActualIdApuntec = null;
   cargarApuntec();
 }
+
+// ---------- BUSCADOR ----------
+// A diferencia de navegar carpeta por carpeta, esto busca en TODO APUNTEC
+// de una (por título o materia), sin importar en qué carpeta esté guardado
+// cada archivo — así el estudiante no tiene que saber dónde buscar.
+let temporizadorBusquedaApuntec = null;
+
+async function buscarEnApuntec(consulta) {
+  const contenedor = document.getElementById('lista-apuntec');
+  const breadcrumb = document.getElementById('breadcrumb-apuntec');
+
+  mostrarSkeleton(contenedor, 6);
+  breadcrumb.innerHTML = `Resultados para "${escaparHtml(consulta)}"`;
+
+  const textoBusqueda = consulta.replace(/[%,]/g, ''); // evita romper la sintaxis del filtro
+  const { data: resultados, error } = await supabaseClient
+    .from('apuntec')
+    .select('*, carpetas(nombre)')
+    .eq('estado', 'aprobado')
+    .or(`titulo.ilike.%${textoBusqueda}%,materia.ilike.%${textoBusqueda}%,categoria.ilike.%${textoBusqueda}%`)
+    .order('titulo')
+    .limit(40);
+
+  if (error) {
+    console.error('Error al buscar en apuntec:', error);
+    contenedor.innerHTML = '<p>No se pudo realizar la búsqueda.</p>';
+    return;
+  }
+
+  if (!resultados || resultados.length === 0) {
+    contenedor.innerHTML = '<p>No encontramos nada que coincida con esa búsqueda.</p>';
+    return;
+  }
+
+  contenedor.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'grid-cards';
+
+  resultados.forEach((item) => {
+    const tarjeta = document.createElement(item.archivo_url ? 'a' : 'div');
+    tarjeta.className = 'card card-item';
+    if (item.archivo_url) {
+      tarjeta.href = item.archivo_url;
+      tarjeta.target = '_blank';
+      tarjeta.rel = 'noopener noreferrer';
+    }
+    const nombreCarpeta = item.carpetas?.nombre ? escaparHtml(item.carpetas.nombre) : '';
+    tarjeta.innerHTML = `
+      ${ICONO_ARCHIVO}
+      <div class="card-item-texto">
+        <h3>${escaparHtml(item.titulo)}<span class="resultado-busqueda-subtitulo">${escaparHtml(item.materia)}${nombreCarpeta ? ` — ${nombreCarpeta}` : ''}</span></h3>
+      </div>`;
+    grid.appendChild(tarjeta);
+  });
+
+  contenedor.appendChild(grid);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const buscador = document.getElementById('buscador-apuntec');
+  if (!buscador) return;
+
+  buscador.addEventListener('input', () => {
+    clearTimeout(temporizadorBusquedaApuntec);
+    const consulta = buscador.value.trim();
+
+    temporizadorBusquedaApuntec = setTimeout(() => {
+      if (consulta.length === 0) {
+        cargarApuntec(); // buscador vacío: volvemos a la navegación normal por carpetas
+      } else if (consulta.length >= 2) {
+        buscarEnApuntec(consulta);
+      }
+    }, 350); // esperamos un toque a que la persona termine de tipear, para no buscar letra por letra
+  });
+});
 
 document.addEventListener('DOMContentLoaded', cargarApuntec);

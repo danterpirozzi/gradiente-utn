@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /paginas/admin-apuntec.html
+Disallow: /paginas/admin-propuestas.html
+Disallow: /api/
+
+Sitemap: https://gradiente-utn.vercel.app/sitemap.xml

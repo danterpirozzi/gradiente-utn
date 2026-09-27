@@ -92,11 +92,11 @@ function renderizarPropuestas(propuestas) {
 
   contenedor.innerHTML = propuestas.map((p) => `
     <article class="tarjeta-propuesta" data-id="${p.id}">
-      <h3>${p.titulo}</h3>
+      <h3>${escaparHtml(p.titulo)}</h3>
       <dl>
-        <dt>Materia</dt><dd>${p.materia}${p.carrera ? ` (${p.carrera})` : ''}</dd>
-        <dt>Categoría</dt><dd>${p.categoria}</dd>
-        <dt>Propuesto por</dt><dd>${p.propuesto_por_nombre || 'sin nombre'}${p.propuesto_por_email ? ` — ${p.propuesto_por_email}` : ''}</dd>
+        <dt>Materia</dt><dd>${escaparHtml(p.materia)}${p.carrera ? ` (${escaparHtml(p.carrera)})` : ''}</dd>
+        <dt>Categoría</dt><dd>${escaparHtml(p.categoria)}</dd>
+        <dt>Propuesto por</dt><dd>${escaparHtml(p.propuesto_por_nombre) || 'sin nombre'}${p.propuesto_por_email ? ` — ${escaparHtml(p.propuesto_por_email)}` : ''}</dd>
         <dt>Fecha</dt><dd>${new Date(p.creado_en).toLocaleDateString('es-AR')}</dd>
         <dt>Archivo</dt><dd><a href="${p.urlFirmada}" target="_blank" rel="noopener noreferrer" class="btn-ver">Ver / descargar PDF →</a></dd>
       </dl>

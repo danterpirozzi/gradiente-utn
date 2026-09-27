@@ -6,8 +6,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-contacto');
   const mensajeEstado = document.getElementById('mensaje-estado');
 
+  inicializarProteccionAntiSpam(form);
+
   form.addEventListener('submit', async (evento) => {
     evento.preventDefault(); // evita que la página se recargue (comportamiento normal de un form)
+
+    // Si tiene pinta de bot, mostramos éxito falso pero no guardamos nada
+    // (así el bot "aprende" que funcionó y no insiste probando otras cosas)
+    if (esEnvioSospechoso(form)) {
+      mensajeEstado.textContent = '¡Gracias! Ya recibimos tu mensaje.';
+      mensajeEstado.style.color = 'green';
+      form.reset();
+      return;
+    }
+
+    if (limiteDeEnvioAlcanzado('contacto')) {
+      mensajeEstado.textContent = 'Ya nos escribiste hace muy poco — dale unos minutos y probá de nuevo.';
+      mensajeEstado.style.color = 'crimson';
+      return;
+    }
 
     // Tomamos los valores escritos en cada input por su atributo "name"
     const datos = {
@@ -37,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    registrarEnvio('contacto');
     mensajeEstado.textContent = '¡Gracias! Ya recibimos tu mensaje.';
     mensajeEstado.style.color = 'green';
     form.reset(); // vacía el formulario

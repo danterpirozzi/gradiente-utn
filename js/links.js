@@ -31,7 +31,7 @@ async function cargarLinks() {
     tarjeta.target = '_blank'; // abre en pestaña nueva
     tarjeta.rel = 'noopener noreferrer';
 
-    tarjeta.innerHTML = `${ICONO_LINK}<div class="card-item-texto"><h3>${link.nombre}</h3></div>`;
+    tarjeta.innerHTML = `${ICONO_LINK}<div class="card-item-texto"><h3>${escaparHtml(link.nombre)}</h3></div>`;
 
     contenedor.appendChild(tarjeta);
   });

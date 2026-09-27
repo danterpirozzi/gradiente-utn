@@ -6,6 +6,20 @@
   <title>Sumate — Gradiente UTN</title>
   <meta name="description" content="Sumate a Gradiente, el Centro de Estudiantes de la UTN Facultad Regional Rosario. Dejanos tus datos y te contactamos.">
   <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+  <link rel="canonical" href="https://gradiente-utn.vercel.app/paginas/contacto.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sumate — Gradiente UTN">
+  <meta property="og:description" content="Sumate a Gradiente, el Centro de Estudiantes de la UTN Facultad Regional Rosario. Dejanos tus datos y te contactamos.">
+  <meta property="og:image" content="https://gradiente-utn.vercel.app/img/logo-horizontal.png">
+  <meta property="og:url" content="https://gradiente-utn.vercel.app/paginas/contacto.html">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:site_name" content="Gradiente UTN">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sumate — Gradiente UTN">
+  <meta name="twitter:description" content="Sumate a Gradiente, el Centro de Estudiantes de la UTN Facultad Regional Rosario. Dejanos tus datos y te contactamos.">
+  <meta name="twitter:image" content="https://gradiente-utn.vercel.app/img/logo-horizontal.png">
   <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
@@ -44,6 +58,10 @@
 
     <div style="max-width: 500px; margin: 2.5rem auto 0;">
       <form id="form-contacto" style="display: flex; flex-direction: column; gap: 1rem;">
+        <label class="campo-honeypot" aria-hidden="true">
+          No completar este campo
+          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off">
+        </label>
         <label>
           Nombre completo
           <input type="text" name="nombre" required

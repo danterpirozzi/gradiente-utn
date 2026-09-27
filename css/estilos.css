@@ -628,6 +628,48 @@ button[type="submit"]:hover {
   font-size: 1.02rem;
 }
 
+/* ---------- BUSCADOR (APUNTEC) ---------- */
+.input-buscador {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--fondo-card);
+  color: var(--texto-claro);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.input-buscador:focus {
+  outline: none;
+  border-color: var(--celeste);
+}
+
+.input-buscador::placeholder {
+  color: var(--texto-mutado);
+}
+
+/* Campo trampa (honeypot): invisible y fuera de la navegación por teclado
+   para una persona real, pero un bot que autocompleta formularios sí lo ve
+   y lo llena. No usamos display:none porque algunos bots lo detectan y lo
+   saltean; con posicionamiento fuera de pantalla es más efectivo. */
+.campo-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.resultado-busqueda-subtitulo {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--texto-mutado);
+  font-weight: 400;
+  margin-top: 0.15rem;
+}
+
 /* ---------- IMÁGENES ESTANDARIZADAS (novedades / espacios CEUTN) ---------- */
 /* Formato vertical fijo siempre (también en mobile): cualquier foto que se suba
    se acomoda sola, recortada al centro. El max-height es un techo de seguridad

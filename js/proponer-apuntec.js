@@ -71,8 +71,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const mensaje = document.getElementById('mensaje-estado-propuesta');
   const boton = document.getElementById('btn-proponer');
 
+  inicializarProteccionAntiSpam(form);
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Bot detectado (campo trampa lleno, o envío demasiado rápido): mostramos
+    // éxito falso y no procesamos nada, para no darle pistas de que lo filtramos
+    if (esEnvioSospechoso(form)) {
+      mensaje.style.color = 'var(--celeste)';
+      mensaje.textContent = '¡Gracias! Tu material quedó enviado para revisión.';
+      form.reset();
+      return;
+    }
+
+    if (limiteDeEnvioAlcanzado('propuesta-apuntec', 30)) {
+      mensaje.style.color = 'var(--rosa)';
+      mensaje.textContent = 'Ya mandaste una propuesta hace muy poco — esperá un momento antes de enviar otra.';
+      return;
+    }
 
     const nombre = document.getElementById('input-nombre').value.trim();
     const email = document.getElementById('input-email').value.trim();
@@ -133,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(`No se pudo registrar la propuesta: ${errorInsert.message}`);
       }
 
+      registrarEnvio('propuesta-apuntec');
       mensaje.style.color = 'var(--celeste)';
       mensaje.textContent = '¡Gracias! Tu material quedó enviado para revisión. Te avisamos si lo publicamos (o si necesitamos consultarte algo).';
       form.reset();
