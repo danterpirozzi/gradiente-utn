@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestionar material — Gradiente UTN</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <style>
+    .campo-admin {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--borde);
+      background: var(--fondo-card);
+      color: var(--texto-claro);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .tarjeta-material {
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      padding: 1.1rem;
+      margin-bottom: 1rem;
+      background: var(--fondo-card);
+    }
+    .tarjeta-material .ruta-carpeta {
+      font-size: 0.78rem;
+      color: var(--texto-mutado);
+      margin-bottom: 0.6rem;
+    }
+    .fila-editable {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    @media (max-width: 600px) {
+      .fila-editable { grid-template-columns: 1fr; }
+    }
+    .fila-acciones-material {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 0.7rem;
+    }
+    .btn-guardar {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--celeste);
+      color: var(--azul-oscuro);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .btn-mover {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--texto-claro);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .btn-eliminar {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--rosa);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--rosa);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="logo">
+      <img src="../img/logo.png" alt="Gradiente">
+    </a>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="admin-apuntec.html">Subir material</a>
+      <a href="apuntec.html">Volver a APUNTEC</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Gestionar material publicado</h1>
+    <p>Buscá un material ya publicado para editar su título/datos, moverlo de carpeta, o eliminarlo (esto también borra el archivo del repositorio de GitHub).</p>
+
+    <section style="margin: 1.5rem 0; padding: 1.2rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--fondo-card); max-width: 560px;">
+      <h3 style="margin-bottom: 0.8rem;">Credenciales de esta sesión</h3>
+
+      <label>
+        Clave de administración del sitio
+        <input type="password" id="input-admin-clave" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Token de GitHub <span style="font-weight: 400; color: var(--texto-mutado);">(solo hace falta para eliminar, no para editar)</span>
+        <input type="password" id="input-github-token" class="campo-admin" style="margin-top: 0.3rem;" autocomplete="off">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Usuario/organización de GitHub
+        <input type="text" id="input-github-owner" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: danterpirozzi">
+      </label>
+
+      <label style="display: block; margin-top: 1rem;">
+        Nombre del repo de material
+        <input type="text" id="input-github-repo" class="campo-admin" style="margin-top: 0.3rem;" placeholder="ej: gradiente-material">
+      </label>
+    </section>
+
+    <input type="search" id="buscador-gestion" class="input-buscador" style="max-width: 560px;"
+           placeholder="Buscar por título, materia o categoría (mínimo 2 letras)...">
+
+    <div id="resultados-gestion" style="margin-top: 1.2rem; max-width: 700px;"></div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/selector-carpetas.js"></script>
+  <script src="../js/admin-gestionar-apuntec.js"></script>
+</body>
+</html>

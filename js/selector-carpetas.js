@@ -204,3 +204,160 @@ async function inicializarSelectorDeCarpetas() {
 }
 
 document.addEventListener('DOMContentLoaded', inicializarSelectorDeCarpetas);
+
+// ---------- MODAL DE "MOVER A OTRA CARPETA" ----------
+// A diferencia del widget de arriba (que vive fijo en un formulario), esto
+// se abre como una ventana flotante sobre cualquier página, para reasignar
+// la carpeta de un material que ya existe. Se usa desde el panel de
+// gestión de APUNTEC (editar/mover/eliminar material).
+async function abrirSelectorCarpetasModal(seccion, alElegir) {
+  const { data: carpetas, error } = await supabaseClient
+    .from('carpetas')
+    .select('*')
+    .eq('seccion', seccion)
+    .order('orden');
+
+  if (error || !carpetas) {
+    alert('No se pudieron cargar las carpetas.');
+    return;
+  }
+
+  const porId = {};
+  carpetas.forEach((c) => { porId[c.id] = { ...c, hijos: [] }; });
+  const raiz = [];
+  carpetas.forEach((c) => {
+    if (c.carpeta_padre_id && porId[c.carpeta_padre_id]) {
+      porId[c.carpeta_padre_id].hijos.push(porId[c.id]);
+    } else {
+      raiz.push(porId[c.id]);
+    }
+  });
+
+  function rutaCompleta(id) {
+    const partes = [];
+    let actual = porId[id];
+    while (actual) {
+      partes.unshift(actual.nombre);
+      actual = actual.carpeta_padre_id ? porId[actual.carpeta_padre_id] : null;
+    }
+    return partes.join(' / ');
+  }
+
+  const fondo = document.createElement('div');
+  fondo.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; display:flex; align-items:center; justify-content:center; padding:1rem;';
+
+  const tarjeta = document.createElement('div');
+  tarjeta.style.cssText = 'background:var(--fondo-card); border:1px solid var(--borde); border-radius:var(--radio); padding:1.2rem; max-width:420px; width:100%; max-height:80vh; display:flex; flex-direction:column;';
+  tarjeta.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+      <strong>Elegir carpeta</strong>
+      <button type="button" id="btn-cerrar-modal-carpeta" style="background:transparent; border:none; color:var(--texto-mutado); font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <input type="search" id="buscador-modal-carpeta" class="input-buscador" style="margin-bottom:0.6rem;" placeholder="Buscar carpeta...">
+    <p id="migas-modal-carpeta" style="font-size:0.78rem; color:var(--texto-mutado); margin-bottom:0.5rem;"></p>
+    <div id="lista-modal-carpeta" style="overflow-y:auto; flex:1;"></div>
+  `;
+  fondo.appendChild(tarjeta);
+  document.body.appendChild(fondo);
+
+  const buscador = tarjeta.querySelector('#buscador-modal-carpeta');
+  const migas = tarjeta.querySelector('#migas-modal-carpeta');
+  const lista = tarjeta.querySelector('#lista-modal-carpeta');
+
+  function cerrar() {
+    fondo.remove();
+  }
+
+  function elegir(carpeta) {
+    alElegir({ id: carpeta.id, nombre: carpeta.nombre, ruta: rutaCompleta(carpeta.id) });
+    cerrar();
+  }
+
+  let nivelActual = raiz;
+  let migaDePan = [];
+
+  function renderizarNivel() {
+    migas.innerHTML = migaDePan.length === 0
+      ? 'Carpetas principales'
+      : `<a href="#" data-volver="raiz">Carpetas principales</a>` +
+        migaDePan.map((m, i) => ` / <a href="#" data-volver="${i}">${escaparHtml(m.nombre)}</a>`).join('');
+
+    lista.innerHTML = nivelActual.length === 0
+      ? '<p style="font-size:0.85rem; color:var(--texto-mutado); padding:0.5rem;">No hay subcarpetas acá.</p>'
+      : nivelActual.map((c) => `
+          <div class="fila-carpeta-selector" data-id="${c.id}">
+            <span>${ICONO_CARPETA}</span>
+            <span class="nombre-fila-carpeta">${escaparHtml(c.nombre)}</span>
+            ${c.hijos.length > 0 ? '<span class="entrar-fila-carpeta">Entrar →</span>' : ''}
+            <button type="button" class="btn-usar-carpeta" data-id="${c.id}">Usar esta</button>
+          </div>
+        `).join('');
+
+    lista.querySelectorAll('.nombre-fila-carpeta, .entrar-fila-carpeta').forEach((el) => {
+      el.addEventListener('click', () => {
+        const fila = el.closest('.fila-carpeta-selector');
+        const carpeta = porId[fila.dataset.id];
+        if (carpeta.hijos.length > 0) {
+          migaDePan.push({ id: carpeta.id, nombre: carpeta.nombre });
+          nivelActual = carpeta.hijos;
+          renderizarNivel();
+        } else {
+          elegir(carpeta);
+        }
+      });
+    });
+
+    lista.querySelectorAll('.btn-usar-carpeta').forEach((btn) => {
+      btn.addEventListener('click', () => elegir(porId[btn.dataset.id]));
+    });
+
+    migas.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const volver = a.dataset.volver;
+        if (volver === 'raiz') {
+          migaDePan = [];
+          nivelActual = raiz;
+        } else {
+          const indice = Number(volver);
+          migaDePan = migaDePan.slice(0, indice + 1);
+          nivelActual = porId[migaDePan[indice].id].hijos;
+        }
+        renderizarNivel();
+      });
+    });
+  }
+
+  buscador.addEventListener('input', () => {
+    const consulta = buscador.value.trim().toLowerCase();
+    if (consulta.length === 0) {
+      renderizarNivel();
+      return;
+    }
+    const coincidencias = carpetas.filter((c) => c.nombre.toLowerCase().includes(consulta));
+    migas.textContent = `Resultados para "${consulta}"`;
+    lista.innerHTML = coincidencias.length === 0
+      ? '<p style="font-size:0.85rem; color:var(--texto-mutado); padding:0.5rem;">Ninguna carpeta coincide.</p>'
+      : coincidencias.map((c) => `
+          <div class="fila-carpeta-selector" data-id="${c.id}">
+            <span>${ICONO_CARPETA}</span>
+            <span class="nombre-fila-carpeta">${escaparHtml(rutaCompleta(c.id))}</span>
+            <button type="button" class="btn-usar-carpeta" data-id="${c.id}">Usar esta</button>
+          </div>
+        `).join('');
+    lista.querySelectorAll('.nombre-fila-carpeta, .btn-usar-carpeta').forEach((el) => {
+      el.addEventListener('click', () => elegir(porId[el.closest('.fila-carpeta-selector').dataset.id]));
+    });
+  });
+
+  tarjeta.querySelector('#btn-cerrar-modal-carpeta').addEventListener('click', cerrar);
+  fondo.addEventListener('click', (e) => { if (e.target === fondo) cerrar(); });
+  document.addEventListener('keydown', function escListener(e) {
+    if (e.key === 'Escape') {
+      cerrar();
+      document.removeEventListener('keydown', escListener);
+    }
+  });
+
+  renderizarNivel();
+}
