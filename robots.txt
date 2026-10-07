@@ -4,4 +4,4 @@ Disallow: /paginas/admin-apuntec.html
 Disallow: /paginas/admin-propuestas.html
 Disallow: /api/
 
-Sitemap: https://gradiente-utn.vercel.app/sitemap.xml
+Sitemap: https://gradiente-utn.com.ar/sitemap.xml
