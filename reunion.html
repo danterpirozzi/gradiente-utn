@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>¿Cuándo nos juntamos? · Gradiente</title>
+<style>
+/* ===== ADAPTAR: cambiá estas variables por los colores y la tipografía de la web ===== */
+:root{
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#f4f6fa;
+  --surface:#ffffff;
+  --text:#14213d;
+  --muted:#5b6578;
+  --line:#dde2ec;
+  --accent:#1f4fd8;
+  --accent-text:#ffffff;
+  --best:#15803d;
+  --radius:14px;
+}
+/* ================================================================================= */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 var(--font)}
+.wrap{max-width:600px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:24px;margin:8px 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+input[type=text]{width:100%;padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+input[type=text]:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 40%,transparent);outline-offset:1px}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{flex:1;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;cursor:pointer}
+.tab.on{background:var(--accent);border-color:var(--accent);color:var(--accent-text);font-weight:600}
+.grid{display:grid;grid-template-columns:42px repeat(5,1fr);gap:3px;touch-action:none;user-select:none;-webkit-user-select:none}
+.hd{font-size:13px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+.hr{font-size:11px;color:var(--muted);text-align:right;padding-right:4px;align-self:center}
+.c{height:31px;border-radius:6px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.c.on{background:var(--accent);border-color:var(--accent)}
+.res .c{background:color-mix(in srgb,var(--accent) calc(var(--p)*100%),var(--bg));cursor:pointer}
+.res .c.best{outline:2px solid var(--best);outline-offset:-2px}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-text);font:inherit;font-weight:700;cursor:pointer;margin-top:4px}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{font-size:14px;margin-top:8px;color:var(--muted);min-height:20px}
+.err{color:#b42318}
+.hint{font-size:13px;color:var(--muted);margin:0 0 8px}
+.best-list{margin:6px 0 0;padding-left:18px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>¿Cuándo nos juntamos?</h1>
+  <p class="sub">Marcá todos los horarios en los que podés. Tarda 30 segundos.</p>
+
+  <div class="tabs">
+    <button class="tab on" id="t-mine">Mi disponibilidad</button>
+    <button class="tab" id="t-res">Resultados</button>
+  </div>
+
+  <div id="v-mine">
+    <div class="card"><input type="text" id="name" placeholder="Tu nombre" maxlength="40" autocomplete="off"></div>
+    <div class="card">
+      <p class="hint">Tocá o arrastrá sobre los horarios en los que SÍ podés.</p>
+      <div class="grid" id="g-mine"></div>
+    </div>
+    <button class="btn" id="save">Guardar</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div id="v-res" class="hidden">
+    <div class="card" id="best"></div>
+    <div class="card">
+      <p class="hint">Más oscuro = más gente disponible. Tocá un horario para ver quién puede.</p>
+      <div class="grid res" id="g-res"></div>
+    </div>
+    <div class="card hidden" id="who"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ===== COMPLETAR: Supabase → Project Settings → API ===== */
+const SUPABASE_URL = "PEGAR_AQUI_LA_PROJECT_URL";
+const SUPABASE_ANON_KEY = "PEGAR_AQUI_LA_ANON_PUBLIC_KEY";
+/* ======================================================== */
+
+const TABLE="disponibilidad_reunion", KEY="gradiente_reunion_id";
+const DAYS=["Lun","Mar","Mié","Jue","Vie"], H0=8, H1=22;
+const VALID=/^[0-4]-(8|9|1\d|2[0-2])$/;
+const $=id=>document.getElementById(id);
+const hh=h=>String(h).padStart(2,"0")+":00";
+let sb=null, myId=null, mine=new Set(), people=[], painting=null;
+try{myId=localStorage.getItem(KEY)}catch(e){}
+
+function buildGrid(el){
+  el.appendChild(document.createElement("div"));
+  DAYS.forEach(d=>{const x=document.createElement("div");x.className="hd";x.textContent=d;el.appendChild(x)});
+  for(let h=H0;h<=H1;h++){
+    const l=document.createElement("div");l.className="hr";l.textContent=hh(h);el.appendChild(l);
+    for(let d=0;d<5;d++){const c=document.createElement("div");c.className="c";c.dataset.k=d+"-"+h;el.appendChild(c)}
+  }
+}
+buildGrid($("g-mine"));buildGrid($("g-res"));
+
+function say(t,bad){const m=$("msg");m.textContent=t;m.className="msg"+(bad?" err":"")}
+function paintMine(){$("g-mine").querySelectorAll(".c").forEach(c=>c.classList.toggle("on",mine.has(c.dataset.k)))}
+function cellAt(e){const t=document.elementFromPoint(e.clientX,e.clientY);return t&&t.classList.contains("c")&&$("g-mine").contains(t)?t:null}
+function apply(c){painting?mine.add(c.dataset.k):mine.delete(c.dataset.k);c.classList.toggle("on",painting)}
+const gm=$("g-mine");
+gm.addEventListener("pointerdown",e=>{const c=cellAt(e);if(!c)return;painting=!mine.has(c.dataset.k);apply(c);say("");e.preventDefault()});
+gm.addEventListener("pointermove",e=>{if(painting===null)return;const c=cellAt(e);if(c)apply(c)});
+window.addEventListener("pointerup",()=>{painting=null});
+window.addEventListener("pointercancel",()=>{painting=null});
+
+function showTab(t){
+  $("v-mine").classList.toggle("hidden",t!=="mine");
+  $("v-res").classList.toggle("hidden",t!=="res");
+  $("t-mine").classList.toggle("on",t==="mine");
+  $("t-res").classList.toggle("on",t==="res");
+  if(t==="res")loadResults();
+}
+$("t-mine").onclick=()=>showTab("mine");
+$("t-res").onclick=()=>showTab("res");
+
+function clean(rows){
+  return rows.map(r=>({id:r.id,name:String(r.nombre||"Sin nombre").slice(0,40),
+    slots:(Array.isArray(r.slots)?r.slots:[]).filter(k=>VALID.test(k))}));
+}
+async function loadResults(){
+  if(!sb){return}
+  const {data,error}=await sb.from(TABLE).select("id,nombre,slots");
+  if(error){$("best").textContent="No se pudieron cargar los resultados. Probá de nuevo en un momento.";return}
+  people=clean(data);renderRes();
+}
+function slotMap(){const m={};people.forEach(p=>p.slots.forEach(k=>{(m[k]=m[k]||[]).push(p.name)}));return m}
+function renderRes(){
+  const m=slotMap(),n=people.length;let max=0;
+  Object.values(m).forEach(a=>{if(a.length>max)max=a.length});
+  $("g-res").querySelectorAll(".c").forEach(c=>{
+    const a=m[c.dataset.k]||[];
+    c.style.setProperty("--p",max?a.length/max*0.9:0);
+    c.textContent=a.length||"";
+    c.classList.toggle("best",max>0&&a.length===max);
+  });
+  const box=$("best");box.innerHTML="";
+  if(!n||!max){box.textContent="Todavía no respondió nadie.";return}
+  const t=document.createElement("div");t.style.fontWeight="700";
+  t.textContent="Mejores horarios ("+max+" de "+n+" pueden)";box.appendChild(t);
+  const runs=[];
+  for(let d=0;d<5;d++){let s=null;
+    for(let h=H0;h<=H1+1;h++){
+      const ok=h<=H1&&(m[d+"-"+h]||[]).length===max;
+      if(ok&&s===null)s=h;
+      if(!ok&&s!==null){runs.push({d,s,e:h});s=null}
+    }}
+  runs.sort((a,b)=>(b.e-b.s)-(a.e-a.s));
+  const ul=document.createElement("ul");ul.className="best-list";
+  runs.slice(0,4).forEach(r=>{const li=document.createElement("li");li.textContent=DAYS[r.d]+" "+hh(r.s)+" a "+hh(r.e);ul.appendChild(li)});
+  box.appendChild(ul);
+}
+$("g-res").addEventListener("click",e=>{
+  const c=e.target.closest(".c");if(!c)return;
+  const [d,h]=c.dataset.k.split("-").map(Number);
+  const yes=slotMap()[c.dataset.k]||[];
+  const no=people.map(p=>p.name).filter(x=>!yes.includes(x));
+  const w=$("who");w.classList.remove("hidden");w.innerHTML="";
+  const a=document.createElement("div");a.style.fontWeight="700";a.textContent=DAYS[d]+" "+hh(h)+" a "+hh(h+1);w.appendChild(a);
+  const b=document.createElement("div");b.textContent="Pueden: "+(yes.join(", ")||"nadie");w.appendChild(b);
+  const f=document.createElement("div");f.style.color="var(--muted)";f.textContent="No pueden: "+(no.join(", ")||"nadie");w.appendChild(f);
+});
+
+$("save").onclick=async()=>{
+  const nombre=$("name").value.trim();
+  if(!sb){say("Falta configurar la conexión con Supabase.",true);return}
+  if(!nombre){say("Escribí tu nombre primero.",true);$("name").focus();return}
+  if(!mine.size){say("Marcá al menos un horario.",true);return}
+  $("save").disabled=true;
+  const row={nombre,slots:[...mine],updated_at:new Date().toISOString()};
+  let res;
+  if(myId){res=await sb.from(TABLE).update(row).eq("id",myId).select("id")}
+  if(!myId||(res&&!res.error&&!res.data.length)){res=await sb.from(TABLE).insert(row).select("id")}
+  if(res.error||!res.data||!res.data.length){say("No se pudo guardar. Probá de nuevo.",true)}
+  else{
+    myId=res.data[0].id;try{localStorage.setItem(KEY,myId)}catch(e){}
+    say("Guardado. Podés volver y cambiarlo cuando quieras.");
+    setTimeout(()=>showTab("res"),600);
+  }
+  $("save").disabled=false;
+};
+
+async function init(){
+  if(!window.supabase||SUPABASE_URL.startsWith("PEGAR")){say("Falta completar SUPABASE_URL y SUPABASE_ANON_KEY en el archivo.",true);return}
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  if(myId){
+    const {data}=await sb.from(TABLE).select("id,nombre,slots").eq("id",myId).maybeSingle();
+    if(data){const p=clean([data])[0];mine=new Set(p.slots);$("name").value=p.name;paintMine()}
+  }
+}
+init();
+</script>
+</body>
+</html>
